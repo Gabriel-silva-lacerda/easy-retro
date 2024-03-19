@@ -1,0 +1,35 @@
+@import "../../../styles/variables.scss";
+.modalContainer {
+  padding: 1.5rem 2rem;
+  position: relative;
+  .closeButton {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .buttonContainer {
+    display: flex;
+    gap: 0.5rem;
+
+    button {
+      background: $primary-color;
+      color: $white;
+      width: 100%;
+      &:last-child {
+        background: $input-color;
+      }
+
+      &:disabled {
+        background: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+}

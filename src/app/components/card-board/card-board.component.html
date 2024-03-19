@@ -1,0 +1,12 @@
+<li class="cardContainer">
+  <div class="card" (click)="redirectToCard(cardContent.id)">
+    <span class="title-cart">{{ cardContent.projectName }}</span>
+    <div>
+      <mat-icon>schedule</mat-icon>
+      <span>{{ cardContent.date | date : "dd/MM/yyyy" }}</span>
+    </div>
+  </div>
+  <button (click)="deleteCard(cardContent.id)">
+    <mat-icon>delete</mat-icon>
+  </button>
+</li>

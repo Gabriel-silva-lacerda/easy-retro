@@ -1,0 +1,17 @@
+<form
+  [formGroup]="publicBoard"
+  class="publicBoardModal"
+  (ngSubmit)="onSubmit()"
+>
+  <span>New column</span>
+  <mat-form-field class="full-width">
+    <mat-label>Enter column name</mat-label>
+    <input matInput formControlName="taskName" />
+  </mat-form-field>
+  <div class="buttonContainer">
+    <button mat-raised-button>Create</button>
+    <button mat-raised-button (keydown.enter)="$event.preventDefault()">
+      Cancel
+    </button>
+  </div>
+</form>

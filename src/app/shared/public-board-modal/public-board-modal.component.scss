@@ -1,0 +1,33 @@
+@import "../../../styles/variables";
+.publicBoardModal {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 2rem;
+
+  span {
+    font-size: 1.2rem;
+    color: $black;
+    text-align: center;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .buttonContainer {
+    display: flex;
+    gap: 0.5rem;
+
+    button {
+      background: $primary-color;
+      color: $white;
+      width: 100%;
+      &:last-child {
+        background: $input-color;
+      }
+
+      &:disabled {
+        background: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+}

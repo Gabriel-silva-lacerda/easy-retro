@@ -1,0 +1,154 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/mixin.scss";
+
+.containerDashboard {
+  background: $tertiary-color;
+  min-height: calc(100vh - 65px);
+  position: relative;
+
+  .dashBoard {
+    padding: 3rem 1.3rem !important;
+    @include maxWidth();
+    .filterContainer {
+      @include flexBox(space-between, 0.6rem);
+      .dashTitle {
+        @include flexBox(initial, 0.6rem);
+
+        h2 {
+          margin: 0;
+          font-size: 1.6rem;
+          color: $black;
+        }
+
+        span {
+          border: 1px solid $primary-color;
+          border-radius: 0.4rem;
+          padding: 0.4rem;
+        }
+      }
+
+      .dashInputContainer {
+        @include flexBox(initial, 2rem);
+        .sortContainer {
+          @include flexBox(initial, 0.6rem);
+          span {
+            display: block;
+            width: 70px;
+          }
+
+          .containerSortDate {
+            @include flexBox(initial, 0rem);
+            button {
+              border-radius: 0;
+              border: 1px solid $input-color;
+              cursor: pointer;
+              width: 30px;
+              height: 30px;
+
+              &.descButton,
+              &.ascButton {
+                background: $primary-color;
+                color: $white;
+                border-color: $primary-color;
+              }
+            }
+          }
+        }
+      }
+    }
+    .containerBoards {
+      margin-top: 4rem;
+
+      h4 {
+        font-size: 1.2rem;
+        color: $secondary-color;
+      }
+      .boards {
+        display: flex !important;
+        gap: 2rem;
+
+        @media (max-width: 595px) {
+          flex-wrap: wrap;
+          display: block !important;
+        }
+
+        .addBoard {
+          @include flexBox(center, 0.6rem);
+          flex-direction: column;
+          border: 2px dashed #c0c0d4;
+          width: 270px;
+          min-width: 270px;
+          height: 160px;
+          border-radius: 0.4rem;
+          cursor: pointer;
+          transition: border-color 0.3s;
+
+          @media (max-width: 595px) {
+            width: 100% !important;
+            max-width: 100%;
+            margin-bottom: 2rem;
+          }
+          &:hover {
+            border-color: $primary-color;
+            button {
+              background-color: $primary-color;
+              color: $white;
+            }
+            span {
+              color: $primary-color;
+            }
+          }
+
+          button {
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            border: none;
+            background: $input-color;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: 0.3s;
+          }
+
+          span {
+            color: $secondary-color;
+            transition: 0.3s;
+          }
+        }
+
+        ul {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+
+          @media (max-width: 595px) {
+            display: block !important;
+          }
+        }
+      }
+    }
+  }
+
+  .loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    overflow: hidden;
+  }
+
+  @media (max-width: 595px) {
+    .filterContainer,
+    .dashInputContainer {
+      flex-direction: column;
+      align-items: start !important;
+      width: 100%;
+    }
+  }
+}

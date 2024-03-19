@@ -1,0 +1,12 @@
+@mixin flexBox($justifyContent, $gap) {
+  display: flex;
+  justify-content: $justifyContent;
+  align-items: center;
+  gap: $gap;
+}
+
+@mixin maxWidth() {
+  max-width: 1700px;
+  margin: 0 auto;
+  padding: 0 1.3rem;
+}

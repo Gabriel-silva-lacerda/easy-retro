@@ -1,0 +1,75 @@
+@import "../../../styles/mixin.scss";
+@import "../../../styles/variables.scss";
+
+.publicBoardContainer {
+  .actionsContainer {
+    @include maxWidth();
+    @include flexBox(flex-end, 0.7rem);
+    margin: 1rem auto !important;
+
+    .searchContainer {
+      @include flexBox(center, 0.4rem);
+
+      button {
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        mat-icon {
+          font-size: 1.1rem;
+          height: 15px;
+        }
+      }
+    }
+
+    .layoutContainer {
+      display: flex;
+
+      button {
+        color: #8c8c9e;
+        border: 1px solid $primary-color;
+        padding: 0.2rem;
+        cursor: pointer;
+        @include flexBox(center, 0rem);
+        background: none;
+
+        mat-icon {
+          font-size: 1.2rem;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
+    .addButton {
+      height: 30px;
+      background-color: $primary-color;
+      cursor: pointer;
+      color: #fff;
+      border-radius: 2px;
+      width: 100%;
+      max-width: 120px;
+      border: none;
+    }
+  }
+
+  .containerList {
+    background: $tertiary-color;
+    min-height: calc(100vh - 114px);
+    overflow: auto;
+    padding: 1rem 1.5rem 0 1.5rem;
+
+    .boardList {
+      display: flex;
+      // flex-direction: column;
+      margin: 1rem 0 0 0;
+      // padding: 1rem 1.5rem 0 1.5rem;
+    }
+  }
+
+  .notes {
+    display: flex;
+  }
+}

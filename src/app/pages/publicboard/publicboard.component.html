@@ -1,0 +1,32 @@
+<section class="publicBoardContainer">
+  <div class="actionsContainer">
+    <div class="searchContainer">
+      <button>
+        <mat-icon> visibility </mat-icon>
+      </button>
+      <app-filter-input />
+    </div>
+    <div class="layoutContainer">
+      <button>
+        <mat-icon>view_column_2</mat-icon>
+      </button>
+      <button>
+        <mat-icon> splitscreen </mat-icon>
+      </button>
+    </div>
+    <button class="addButton" (click)="openDialog()">Add</button>
+  </div>
+
+  <div class="containerList">
+    <ul class="boardList">
+      @for (board of dataBoard; track $index) {
+      <app-public-board-name
+        (noteId)="addNotesId($event)"
+        [id]="board.id"
+        [selectedId]="notesId"
+        [board]="board"
+      />
+      }
+    </ul>
+  </div>
+</section>

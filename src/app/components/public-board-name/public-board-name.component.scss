@@ -1,0 +1,54 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/mixin.scss";
+
+:host {
+  width: 100%;
+  margin-right: 1rem !important;
+  @include maxWidth();
+  padding: 0 0 !important;
+  .notesName {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 212px;
+
+    div {
+      @include flexBox(space-between, 0.6rem);
+
+      span {
+        font-size: 1rem;
+        font-weight: 500;
+        color: $black;
+        display: block;
+      }
+
+      .buttonMore {
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        mat-icon {
+          font-size: 1.1rem;
+          height: 15px;
+        }
+      }
+    }
+
+    .addButton {
+      display: block;
+      width: 100%;
+      padding: 4px 8px;
+      margin: 0 0 10px;
+      font-weight: bold;
+      color: #8c8c9e;
+      font-size: 18px;
+      background: rgba(94, 94, 113, 0.08);
+      border: 0;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+  }
+}

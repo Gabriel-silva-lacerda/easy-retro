@@ -1,0 +1,53 @@
+<section class="containerDashboard">
+  <div class="dashBoard">
+    <div class="filterContainer">
+      <div class="dashTitle">
+        <h2>Dashboard</h2>
+        <span>{{ cardDash.length }} Boards</span>
+      </div>
+      <div class="dashInputContainer">
+        <app-filter-input
+          filterName="Filter your boards"
+          (filterChange)="searchData($event)"
+        />
+        <div class="sortContainer">
+          <span>Sort date</span>
+          <div class="containerSortDate">
+            <button
+              (click)="sortCardDash('asc')"
+              [ngClass]="selectedButton === 'asc' ? 'ascButton' : ''"
+            >
+              <mat-icon>keyboard_arrow_down </mat-icon>
+            </button>
+            <button
+              (click)="sortCardDash('desc')"
+              [ngClass]="selectedButton === 'desc' ? 'descButton' : ''"
+            >
+              <mat-icon>expand_less </mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="containerBoards">
+      <h4>Public boards</h4>
+      <div class="boards">
+        <div class="addBoard" (click)="openDialog()">
+          <button>+</button>
+          <span>Add board</span>
+        </div>
+        <ul>
+          @for (card of cardDash; track $index) {
+          <app-card-board [cardContent]="card" />
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  @if (isLoading) {
+  <div class="loadingOverlay">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+  }
+</section>

@@ -1,0 +1,20 @@
+<li class="notesName">
+  <div>
+    <span>{{ board.taskName }}</span>
+    <button class="buttonMore">
+      <mat-icon> more_vert </mat-icon>
+    </button>
+  </div>
+  <button class="addButton" (click)="emitAddNoteClicked(); value = true">
+    +
+  </button>
+  @if(selectedId === id && value) {
+  <app-public-board-notes
+    [isNoteActive]="value"
+    (isNoteChanges)="isNoteChanges($event)"
+    (saveNoteClicked)="handleSaved($event, board.id)"
+  />
+  } @for (note of notes; track $index) {
+  <div>{{ note.content }}</div>
+  }
+</li>

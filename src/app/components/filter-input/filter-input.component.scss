@@ -1,0 +1,35 @@
+@import "../../../styles/mixin.scss";
+@import "../../../styles/variables.scss";
+
+:host {
+  width: 100%;
+  .filterInput {
+    border: 1px solid $input-color;
+    @include flexBox(initial, 0.6rem);
+    padding: 0.3rem;
+    width: 100%;
+    &:focus {
+      background: $white;
+    }
+
+    mat-icon {
+      font-size: 1.3rem;
+      width: 20px;
+      height: 23px;
+    }
+
+    input {
+      background: none;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      width: 100%;
+    }
+
+    @media (max-width: 595px) {
+      :host {
+        background: red;
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+<form [formGroup]="dashForm" class="modalContainer" (ngSubmit)="onSubmit()">
+  <button
+    class="closeButton"
+    (click)="closeModal()"
+    (keydown.enter)="$event.preventDefault()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  <h2>Create Board</h2>
+  <mat-form-field class="full-width">
+    <mat-label>Project Name</mat-label>
+    <input
+      matInput
+      formControlName="projectName"
+      (keydown.enter)="onEnter($event)"
+    />
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>Task Name</mat-label>
+    <input
+      matInput
+      formControlName="taskName"
+      (keydown.enter)="onEnter($event)"
+    />
+  </mat-form-field>
+  <div class="buttonContainer">
+    <button mat-raised-button [disabled]="!dashForm.valid">Create</button>
+    <button
+      mat-raised-button
+      (click)="closeModal()"
+      (keydown.enter)="$event.preventDefault()"
+    >
+      Cancel
+    </button>
+  </div>
+</form>
