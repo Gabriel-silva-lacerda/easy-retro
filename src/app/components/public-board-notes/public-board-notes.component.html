@@ -1,4 +1,4 @@
-<div class="notes">
+<div class="notes" [ngStyle]="{ marginBottom: isNoteActive ? '0.8rem' : '0' }">
   <div>
     <textarea cols="30" rows="10" [(ngModel)]="noteContent"></textarea>
   </div>

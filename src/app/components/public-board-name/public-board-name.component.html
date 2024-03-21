@@ -1,5 +1,5 @@
-<li class="notesName">
-  <div>
+<div class="notesName">
+  <div class="taskContainer">
     <span>{{ board.taskName }}</span>
     <button class="buttonMore">
       <mat-icon> more_vert </mat-icon>
@@ -8,13 +8,21 @@
   <button class="addButton" (click)="emitAddNoteClicked(); value = true">
     +
   </button>
-  @if(selectedId === id && value) {
+  @if(value) {
   <app-public-board-notes
     [isNoteActive]="value"
     (isNoteChanges)="isNoteChanges($event)"
     (saveNoteClicked)="handleSaved($event, board.id)"
   />
-  } @for (note of notes; track $index) {
-  <div>{{ note.content }}</div>
   }
-</li>
+  <ul class="list">
+    @for (note of notes; track $index) {
+    <app-notes
+      [notes]="notes"
+      [note]="note"
+      [isActive]="isActive"
+      [index]="$index"
+    />
+    }
+  </ul>
+</div>

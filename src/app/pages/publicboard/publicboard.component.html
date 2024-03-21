@@ -18,15 +18,12 @@
   </div>
 
   <div class="containerList">
-    <ul class="boardList">
+    <div class="boardList">
       @for (board of dataBoard; track $index) {
-      <app-public-board-name
-        (noteId)="addNotesId($event)"
-        [id]="board.id"
-        [selectedId]="notesId"
-        [board]="board"
-      />
+      <app-public-board-name [board]="board" />
       }
-    </ul>
+    </div>
   </div>
 </section>
+<!-- [selectedId]="notesId"
+(noteId)="addNotesId($event)" -->

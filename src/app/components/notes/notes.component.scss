@@ -1,0 +1,96 @@
+@import "../../../styles/variables.scss";
+
+.noteLi {
+  background: red;
+  margin-bottom: 0.8rem;
+  padding: 0.6rem;
+
+  position: relative;
+
+  .color {
+    position: absolute;
+    background: $white;
+    right: 0;
+    top: 0;
+
+    z-index: 100;
+    max-width: 150px;
+    width: 100%;
+    padding: 0.7rem;
+    border-radius: 3px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.2rem;
+    li {
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      background: red;
+    }
+  }
+
+  .contentContainer {
+    display: flex;
+    justify-content: space-between;
+
+    span {
+      display: block;
+      word-break: break-word;
+      color: $white;
+    }
+    .buttonMore {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      color: $white;
+
+      mat-icon {
+        font-size: 1.1rem;
+        height: 15px;
+      }
+    }
+  }
+
+  .thumbUp {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.2rem;
+
+    margin-top: 0.8rem;
+    width: 100%;
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: $white;
+      mat-icon {
+        font-size: 1.1rem;
+        height: 15px;
+      }
+    }
+
+    .deleteLike {
+      padding: 0.2rem;
+      border-radius: 3px;
+      transition: all 0.3s;
+      width: 15px;
+      height: 15px;
+      &:hover {
+        background: #2f3b56;
+      }
+
+      span {
+        display: block;
+      }
+    }
+
+    .like {
+      color: $white;
+      display: block;
+      font-weight: 500;
+    }
+  }
+}

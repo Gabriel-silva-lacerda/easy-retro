@@ -1,52 +1,80 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { PublicBoardNotesComponent } from '../public-board-notes/public-board-notes.component';
 import { DashboardService } from '../../service/dashboard.service';
-import { publicBoard } from '../../interfaces/dashBoard.interface';
+import { Notes, PublicBoard } from '../../interfaces/dashBoard.interface';
+import { DashFunctionsService } from '../../service/dash-functions.service';
+import { MoreListComponent } from '../more-list/more-list.component';
+import { NgStyle } from '@angular/common';
+import { NotesComponent } from '../notes/notes.component';
 
 @Component({
   selector: 'app-public-board-name',
   standalone: true,
-  imports: [MatIconModule, PublicBoardNotesComponent],
+  imports: [
+    MatIconModule,
+    PublicBoardNotesComponent,
+    MoreListComponent,
+    NgStyle,
+    NotesComponent,
+  ],
   templateUrl: './public-board-name.component.html',
   styleUrl: './public-board-name.component.scss',
 })
 export class PublicBoardNameComponent implements OnInit {
-  @Input() id!: string | undefined;
-  @Input() selectedId!: string | undefined;
-  @Input() board!: publicBoard;
-  @Output() noteId = new EventEmitter<string>();
-  value = false;
-  notes!: any;
+  @ViewChild(PublicBoardNotesComponent)
+  publicBoardNotesComponent!: PublicBoardNotesComponent;
+  @Input() board!: PublicBoard;
 
-  constructor(private dashboardService: DashboardService) {}
+  value = false;
+  notes!: Notes[];
+  isActive: number | null = null;
+
+  constructor(
+    private dashboardService: DashboardService,
+    private dashFunctionsService: DashFunctionsService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    const content = this.board.notes;
-    this.notes = content;
+    this.dashboardService.getNotes().subscribe((data) => {
+      const dataNotes = this.dashboardService.dataNotes();
+
+      this.notes = dataNotes.filter((note) => note.id_notes === this.board.id);
+      // this.dashboardService.dataNotes.set(this.notes);
+    });
   }
 
   handleSaved(value: string, id: string | undefined) {
-    const content = this.board.notes;
-    content.push({ content: value });
-
-    const currentData = this.dashboardService.dataPublicboard();
-    const newData = currentData.map((item) => {
-      console.log({ notes: content });
-
-      if (item.id === id) return { ...item, notes: content };
-
-      return item;
+    const newNote = { content: value, id_notes: id, likes: 0, background: '' };
+    this.dashboardService.postNotes(newNote).subscribe({
+      next: (response) => {
+        this.notes.push(response);
+      },
+      error: (error) => {
+        console.error('Erro ao adicionar nota:', error);
+      },
     });
-
-    this.dashboardService.dataPublicboard.set(newData);
-    console.log(this.dashboardService.dataPublicboard());
   }
+
+  isActiveMore = (index: number) =>
+    (this.isActive = this.isActive === index ? null : index);
+
+  increaseLike = (noteId: string | undefined) =>
+    this.dashFunctionsService.increaseOrDecreaseLike(this.notes, noteId, true);
+
+  decreaseLike = (noteId: any) =>
+    this.dashFunctionsService.increaseOrDecreaseLike(this.notes, noteId, false);
+
+  focusNoteTextarea = () => this.publicBoardNotesComponent.focusNoteTextarea();
 
   isNoteChanges = (bool: boolean) => (this.value = bool);
 
-  emitAddNoteClicked() {
-    this.value = true;
-    this.noteId.emit(this.board.id);
-  }
+  emitAddNoteClicked = () => (this.value = true);
 }

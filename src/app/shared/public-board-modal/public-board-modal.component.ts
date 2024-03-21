@@ -11,9 +11,8 @@ import {
 } from '@angular/forms';
 import { DashboardService } from '../../service/dashboard.service';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
 import { IdService } from '../../service/id.service';
-import { publicBoard } from '../../interfaces/dashBoard.interface';
+
 @Component({
   selector: 'app-public-board-modal',
   standalone: true,
@@ -54,7 +53,6 @@ export class PublicBoardModalComponent implements OnInit {
         taskName: this.publicBoard.value.taskName,
         date: new Date(),
         id_card: this.id,
-        notes: [] as { content: string }[],
       };
 
       this.dashBoardService.postDataPublicboard(modalValue).subscribe({

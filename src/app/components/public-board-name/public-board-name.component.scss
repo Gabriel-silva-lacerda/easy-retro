@@ -12,7 +12,7 @@
     width: 100%;
     min-width: 212px;
 
-    div {
+    .taskContainer {
       @include flexBox(space-between, 0.6rem);
 
       span {
@@ -49,6 +49,10 @@
       border: 0;
       cursor: pointer;
       margin-top: 1rem;
+    }
+
+    .list {
+      width: 100%;
     }
   }
 }

@@ -1,0 +1,42 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/mixin.scss";
+.moreList {
+  position: absolute;
+  right: 0px;
+  top: 30px;
+
+  background: $white;
+
+  z-index: 100;
+  max-width: 150px;
+  width: 100%;
+  padding: 0.7rem;
+  border-radius: 3px;
+  li {
+    @include flexBox(initial, 0.4rem);
+    margin-bottom: 0.7rem;
+    transition: 0.3s;
+    cursor: pointer;
+    padding: 0.1rem;
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &:hover {
+      background: #c0c0d4;
+    }
+    button {
+      background: none;
+      border: none;
+
+      mat-icon {
+        font-size: 1.1rem;
+        height: 15px;
+      }
+    }
+
+    span {
+      color: $black;
+    }
+  }
+}

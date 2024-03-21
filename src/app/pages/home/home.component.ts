@@ -1,5 +1,5 @@
 import { DashFunctionsService } from './../../service/dash-functions.service';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FilterInputComponent } from '../../components/filter-input/filter-input.component';
 import { CardBoardComponent } from '../../components/card-board/card-board.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,7 +7,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { BoardModalComponent } from '../../shared/board-modal/board-modal.component';
 import { DashboardService } from '../../service/dashboard.service';
-import { dashBoard } from '../../interfaces/dashBoard.interface';
+import { DashBoard } from '../../interfaces/dashBoard.interface';
 import { RouterOutlet } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -30,7 +30,7 @@ import { LoadingService } from '../../service/loading.service';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
-  cardDash: dashBoard[] = [];
+  cardDash: DashBoard[] = [];
   selectedButton: 'asc' | 'desc' = 'asc';
   isLoading = false;
 

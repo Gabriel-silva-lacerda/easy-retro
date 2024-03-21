@@ -1,0 +1,21 @@
+<ul class="moreList">
+  <li (click)="editNote()">
+    <button>
+      <mat-icon>edit</mat-icon>
+    </button>
+    <span>Edit card</span>
+  </li>
+  <li class="colorNote" (click)="colorNote(note.id)">
+    <button>
+      <mat-icon>format_color_fill</mat-icon>
+    </button>
+    <span>Set card color</span>
+
+  </li>
+  <li (click)="deleteNote(note.id)">
+    <button>
+      <mat-icon> delete </mat-icon>
+    </button>
+    <span>Delete card</span>
+  </li>
+</ul>

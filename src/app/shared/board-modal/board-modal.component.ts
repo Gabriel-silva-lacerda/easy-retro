@@ -62,7 +62,6 @@ export class BoardModalComponent implements OnInit {
         projectName: this.dashForm.value.projectName,
         taskName: this.dashForm.value.taskName,
         date: new Date(),
-        notes: [] as { content: string }[],
       };
 
       this.dashBoardService.postDataDashboard(modalValue).subscribe({

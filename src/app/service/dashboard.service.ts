@@ -1,7 +1,11 @@
 import { environment } from './../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit, WritableSignal, signal } from '@angular/core';
-import { dashBoard, publicBoard } from '../interfaces/dashBoard.interface';
+import {
+  Notes,
+  DashBoard,
+  PublicBoard,
+} from '../interfaces/dashBoard.interface';
 import { Observable, map, tap } from 'rxjs';
 
 @Injectable({
@@ -10,14 +14,15 @@ import { Observable, map, tap } from 'rxjs';
 export class DashboardService {
   private apiUrl = environment.apiUrl;
 
-  dataDash: WritableSignal<dashBoard[]> = signal([]);
-  searchDash: WritableSignal<dashBoard[]> = signal([]);
-  dataPublicboard: WritableSignal<publicBoard[]> = signal([]);
+  dataDash: WritableSignal<DashBoard[]> = signal([]);
+  searchDash: WritableSignal<DashBoard[]> = signal([]);
+  dataPublicboard: WritableSignal<PublicBoard[]> = signal([]);
+  dataNotes: WritableSignal<Notes[]> = signal([]);
 
   constructor(private http: HttpClient) {}
 
-  getDataDashboard(): Observable<dashBoard[]> {
-    return this.http.get<dashBoard[]>(`${this.apiUrl}/dashboard`).pipe(
+  getDataDashboard(): Observable<DashBoard[]> {
+    return this.http.get<DashBoard[]>(`${this.apiUrl}/dashboard`).pipe(
       tap((data) => {
         this.dataDash.set(data);
         this.searchDash.set(data);
@@ -25,8 +30,33 @@ export class DashboardService {
     );
   }
 
-  postDataDashboard(data: dashBoard): Observable<dashBoard> {
-    return this.http.post<dashBoard>(`${this.apiUrl}/dashboard`, data).pipe(
+  getDataPublicboardById(id: string | undefined): Observable<PublicBoard[]> {
+    return this.http.get<PublicBoard>(`${this.apiUrl}/dashboard/${id}`).pipe(
+      map((card) => [card]),
+      tap((data) => {
+        this.dataPublicboard.set(data);
+      })
+    );
+  }
+
+  getDataPublicboard(): Observable<PublicBoard[]> {
+    return this.http.get<PublicBoard[]>(`${this.apiUrl}/publicboard`).pipe(
+      tap((data) => {
+        this.dataPublicboard.set(data);
+      })
+    );
+  }
+
+  getNotes(): Observable<Notes[]> {
+    return this.http.get<Notes[]>(`${this.apiUrl}/notes`).pipe(
+      tap((data) => {
+        this.dataNotes.set(data);
+      })
+    );
+  }
+
+  postDataDashboard(data: DashBoard): Observable<DashBoard> {
+    return this.http.post<DashBoard>(`${this.apiUrl}/dashboard`, data).pipe(
       tap((newData) => {
         const currentData = this.dataDash();
         currentData.push(newData);
@@ -35,29 +65,8 @@ export class DashboardService {
     );
   }
 
-  deleteDataDashboard(id: string | undefined): Observable<dashBoard> {
-    return this.http.delete<dashBoard>(`${this.apiUrl}/dashboard/${id}`);
-  }
-
-  getDataPublicboardById(id: string): Observable<publicBoard[]> {
-    return this.http.get<publicBoard>(`${this.apiUrl}/dashboard/${id}`).pipe(
-      map((card) => [card]),
-      tap((data) => {
-        this.dataPublicboard.set(data);
-      })
-    );
-  }
-
-  getDataPublicboard(): Observable<publicBoard[]> {
-    return this.http.get<publicBoard[]>(`${this.apiUrl}/publicboard`).pipe(
-      tap((data) => {
-        this.dataPublicboard.set(data);
-      })
-    );
-  }
-
-  postDataPublicboard(data: publicBoard): Observable<publicBoard> {
-    return this.http.post<publicBoard>(`${this.apiUrl}/publicboard`, data).pipe(
+  postDataPublicboard(data: PublicBoard): Observable<PublicBoard> {
+    return this.http.post<PublicBoard>(`${this.apiUrl}/publicboard`, data).pipe(
       tap((newData) => {
         const currentData = this.dataPublicboard();
         currentData.push(newData);
@@ -66,5 +75,28 @@ export class DashboardService {
     );
   }
 
+  postNotes(data: Notes): Observable<Notes> {
+    return this.http.post<Notes>(`${this.apiUrl}/notes`, data).pipe(
+      tap((newData) => {
+        console.log(newData);
 
+        const currentData = this.dataNotes();
+        currentData.push(newData);
+        this.dataNotes.set(currentData);
+        console.log(this.dataNotes());
+      })
+    );
+  }
+
+  deleteDataDashboard(id: string | undefined): Observable<DashBoard> {
+    return this.http.delete<DashBoard>(`${this.apiUrl}/dashboard/${id}`);
+  }
+
+  deleteNotes(id: string | undefined): Observable<Notes> {
+    return this.http.delete<Notes>(`${this.apiUrl}/notes/${id}`);
+  }
+
+  updateNotes(note: any): Observable<Notes> {
+    return this.http.put<Notes>(`${this.apiUrl}/notes/${note.id}`, note);
+  }
 }

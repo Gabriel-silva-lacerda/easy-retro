@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { PublicBoardNameComponent } from '../../components/public-board-name/public-board-name.component';
 import { PublicBoardNotesComponent } from '../../components/public-board-notes/public-board-notes.component';
 import { DashboardService } from '../../service/dashboard.service';
-import { dashBoard, publicBoard } from '../../interfaces/dashBoard.interface';
+import { PublicBoard } from '../../interfaces/dashBoard.interface';
 import { ActivatedRoute } from '@angular/router';
 import { PublicBoardModalComponent } from '../../shared/public-board-modal/public-board-modal.component';
 import { forkJoin } from 'rxjs';
@@ -25,10 +25,9 @@ import { IdService } from '../../service/id.service';
   styleUrl: './publicboard.component.scss',
 })
 export class PublicboardComponent implements OnInit {
-  dataBoard!: publicBoard[];
+  dataBoard!: PublicBoard[];
   addNoteClicked!: boolean;
   notesId!: string | undefined;
-  notes: any[] = [];
 
   constructor(
     private dashboardService: DashboardService,
@@ -58,9 +57,6 @@ export class PublicboardComponent implements OnInit {
         },
       });
     }
-
-    // const notesArray = this.dataBoard.map((data) => data.notes).flat();
-    // this.notes = notesArray;
   }
 
   addNotesId = (id: string) => (this.notesId = id);

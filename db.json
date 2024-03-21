@@ -76,19 +76,13 @@
       "id": "dc82",
       "projectName": "Catarina",
       "taskName": "Silva",
-      "date": "2024-03-18T18:16:58.099Z",
-      "notes": [
-        {
-          "content": "Luiz Silva Lacerda Pinto"
-        }
-      ]
+      "date": "2024-03-18T18:16:58.099Z"
     },
     {
-      "id": "f1f9",
-      "projectName": "Gabrieol",
-      "taskName": "silva",
-      "date": "2024-03-19T11:40:44.267Z",
-      "notes": []
+      "id": "ebfe",
+      "projectName": "Dinamica",
+      "taskName": "Camilla",
+      "date": "2024-03-20T21:57:07.733Z"
     }
   ],
   "publicboard": [
@@ -96,37 +90,53 @@
       "id": "b6bf",
       "taskName": "edsadas",
       "date": "2024-03-18T15:11:09.041Z",
-      "id_card": "5b4f",
-      "notes": [
-        {
-          "content": "Gabriel Silva Lacerda Pinto"
-        }
-      ]
+      "id_card": "5b4f"
     },
     {
       "id": "6f82",
       "taskName": "Hulk",
       "date": "2024-03-18T18:17:17.220Z",
-      "id_card": "dc82",
-      "notes": [
-        {
-          "content": "Gabriel Silva Lacerda Pinto"
-        },
-        {
-          "content": "Fabricio Silva Lacerda Pinto"
-        }
-      ]
+      "id_card": "dc82"
     },
     {
       "id": "0444",
       "taskName": "dsadasd",
       "date": "2024-03-18T19:56:27.726Z",
-      "id_card": "dc82",
-      "notes": [
-        {
-          "content": "Larissa Silva Lacerda Pinto"
-        }
-      ]
+      "id_card": "dc82"
+    },
+    {
+      "id": "3fb4",
+      "taskName": "gabriel",
+      "date": "2024-03-20T00:20:54.348Z",
+      "id_card": "5b4f"
+    },
+    {
+      "id": "cc01",
+      "taskName": "Gabriel",
+      "date": "2024-03-20T21:57:17.326Z",
+      "id_card": "ebfe"
+    },
+    {
+      "id": "7f29",
+      "taskName": "dasdsa",
+      "date": "2024-03-21T13:54:13.805Z",
+      "id_card": "5b4f"
+    }
+  ],
+  "notes": [
+    {
+      "id": "c09a",
+      "content": "dasdas",
+      "id_notes": "3fb4",
+      "likes": 0,
+      "background": "#208eed"
+    },
+    {
+      "id": "2ad7",
+      "content": "dsadas",
+      "id_notes": "b6bf",
+      "likes": 0,
+      "background": "purple"
     }
   ]
 }
