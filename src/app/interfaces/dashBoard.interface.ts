@@ -12,7 +12,7 @@ export interface PublicBoard extends Omit<DashBoard, 'projectName'> {
 export interface Notes {
   id?: string | undefined;
   content: string;
-  id_notes: string | undefined;
+  id_card?: string | undefined;
   likes: number;
   isActive?: boolean;
   background: string;

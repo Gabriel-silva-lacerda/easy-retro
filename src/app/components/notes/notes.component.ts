@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DashFunctionsService } from '../../service/dash-functions.service';
 import { MoreListComponent } from '../more-list/more-list.component';
 import { Notes, PublicBoard } from '../../interfaces/dashBoard.interface';
@@ -31,19 +31,25 @@ export class NotesComponent {
   isActiveMore = (index: number) =>
     (this.isActive = this.isActive === index ? null : index);
 
-  increaseLike = (noteId: string | undefined) =>
-    this.dashFunctionsService.increaseOrDecreaseLike(this.notes, noteId, true);
+  isColorActive = (boll: boolean) => (this.isColor = boll);
 
-  decreaseLike = (noteId: any) =>
-    this.dashFunctionsService.increaseOrDecreaseLike(this.notes, noteId, false);
+  increaseLike = (noteId: string | undefined) =>
+    this.dashFunctionsService.increaseOrDecreaseLike(
+      this.notes,
+      noteId,
+      true
+    );
+
+  decreaseLike = (noteId: string | undefined) =>
+    this.dashFunctionsService.increaseOrDecreaseLike(
+      this.notes,
+      noteId,
+      false
+    );
 
   isActiveTextarea = (boll: boolean) => {
     this.isTextarea = boll;
     this.isActive = boll;
-  };
-
-  isColorActive = (boll: boolean) => {
-    this.isColor = boll;
   };
 
   changeColor(color: string) {
@@ -52,7 +58,7 @@ export class NotesComponent {
 
     this.dashboardService.updateNotes(this.note).subscribe({
       error: (error) => {
-        console.error('Erro ao atualizar likes:', error);
+        console.error(error);
       },
     });
   }

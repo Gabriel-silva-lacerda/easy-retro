@@ -30,8 +30,11 @@ export class MoreListComponent {
     this.isActiveEdit.emit(this.isActiveTextArea);
   }
 
-  deleteNote = (id: string | undefined) =>
-    this.dashFunctionsService.deleteNotes(id);
+  deleteNote = (id: string | undefined, id_card: string | undefined) => {
+    // console.log(id, id_card);
+
+    this.dashFunctionsService.deleteNotes(id, id_card);
+  };
 
   colorNote(id: string | undefined) {
     this.isColorActive = true;

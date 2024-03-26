@@ -6,7 +6,7 @@ import {
   DashBoard,
   PublicBoard,
 } from '../interfaces/dashBoard.interface';
-import { Observable, map, tap } from 'rxjs';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +35,16 @@ export class DashboardService {
       map((card) => [card]),
       tap((data) => {
         this.dataPublicboard.set(data);
+      })
+    );
+  }
+
+  getDataPublicboardById2(id: string | undefined): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/notes?id_card=${id}`).pipe(
+      tap((data) => {
+        // console.log(data);
+
+        this.dataNotes.set(data);
       })
     );
   }
@@ -78,12 +88,10 @@ export class DashboardService {
   postNotes(data: Notes): Observable<Notes> {
     return this.http.post<Notes>(`${this.apiUrl}/notes`, data).pipe(
       tap((newData) => {
-        console.log(newData);
+        // const currentData = this.dataNotes();
+        // currentData.push(newData);
+        // this.dataNotes.set(currentData);
 
-        const currentData = this.dataNotes();
-        currentData.push(newData);
-        this.dataNotes.set(currentData);
-        console.log(this.dataNotes());
       })
     );
   }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable, OnInit } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { DashBoard, Notes } from '../interfaces/dashBoard.interface';
 
@@ -41,6 +41,7 @@ export class DashFunctionsService {
   deleteCard(id: string | undefined) {
     this.dashboardService.deleteDataDashboard(id).subscribe(() => {
       const cards = this.dashboardService.dataDash();
+
       const index = cards.findIndex((card) => card.id === id);
       const isIndexValid = index !== -1;
 
@@ -51,19 +52,24 @@ export class DashFunctionsService {
     });
   }
 
-  deleteNotes(id: string | undefined) {
+  deleteNotes(id: string | undefined, id_card: any) {
     this.dashboardService.deleteNotes(id).subscribe({
       next: () => {
         const notes = this.dashboardService.dataNotes();
-        const index = notes.findIndex((note) => note.id === id);
+        const index = notes.findIndex(
+          (note) => note.id_card === id_card && note.id === id
+        );
+
         if (index !== -1) {
+          console.log(index);
           notes.splice(index, 1);
           this.dashboardService.dataNotes.set(notes);
+          console.log(notes);
         }
       },
       error: (error) => {
         console.error('Erro ao excluir a nota:', error);
-      }
+      },
     });
   }
 }
