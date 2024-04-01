@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PublicBoardNameComponent } from './public-board-name.component';
+import { TextareaComponent } from './textarea.component';
 
-describe('PublicBoardNameComponent', () => {
-  let component: PublicBoardNameComponent;
-  let fixture: ComponentFixture<PublicBoardNameComponent>;
+describe('TextareaComponent', () => {
+  let component: TextareaComponent;
+  let fixture: ComponentFixture<TextareaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PublicBoardNameComponent]
+      imports: [TextareaComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(PublicBoardNameComponent);
+    fixture = TestBed.createComponent(TextareaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

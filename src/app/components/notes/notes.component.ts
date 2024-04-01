@@ -4,7 +4,7 @@ import { MoreListComponent } from '../more-list/more-list.component';
 import { Notes, PublicBoard } from '../../interfaces/dashBoard.interface';
 import { MatIcon } from '@angular/material/icon';
 import { NgStyle } from '@angular/common';
-import { PublicBoardNotesComponent } from '../public-board-notes/public-board-notes.component';
+import { TextareaComponent } from '../textarea/textarea.component';
 import { DashboardService } from '../../service/dashboard.service';
 import { ColorPickerComponent } from '../color-picker/color-picker.component';
 
@@ -15,7 +15,7 @@ import { ColorPickerComponent } from '../color-picker/color-picker.component';
     MoreListComponent,
     MatIcon,
     NgStyle,
-    PublicBoardNotesComponent,
+    TextareaComponent,
     ColorPickerComponent,
   ],
   templateUrl: './notes.component.html',

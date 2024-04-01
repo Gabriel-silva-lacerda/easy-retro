@@ -2,8 +2,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
 import { FilterInputComponent } from '../../components/filter-input/filter-input.component';
 import { MatIconModule } from '@angular/material/icon';
-import { PublicBoardNameComponent } from '../../components/public-board-name/public-board-name.component';
-import { PublicBoardNotesComponent } from '../../components/public-board-notes/public-board-notes.component';
+import { CardComponent } from '../../components/card/card.component';
+import { TextareaComponent } from '../../components/textarea/textarea.component';
 import { DashboardService } from '../../service/dashboard.service';
 import { PublicBoard } from '../../interfaces/dashBoard.interface';
 import { ActivatedRoute } from '@angular/router';
@@ -17,9 +17,9 @@ import { DashFunctionsService } from '../../service/dash-functions.service';
   imports: [
     FilterInputComponent,
     MatIconModule,
-    PublicBoardNotesComponent,
-    PublicBoardNameComponent,
-    PublicBoardNotesComponent,
+    TextareaComponent,
+    CardComponent,
+    TextareaComponent,
   ],
   templateUrl: './publicboard.component.html',
   styleUrl: './publicboard.component.scss',

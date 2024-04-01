@@ -13,13 +13,13 @@ import { Notes } from '../../interfaces/dashBoard.interface';
 import { NgStyle } from '@angular/common';
 
 @Component({
-  selector: 'app-public-board-notes',
+  selector: 'app-textarea',
   standalone: true,
   imports: [FormsModule, NgStyle],
-  templateUrl: './public-board-notes.component.html',
-  styleUrl: './public-board-notes.component.scss',
+  templateUrl: './textarea.component.html',
+  styleUrl: './textarea.component.scss',
 })
-export class PublicBoardNotesComponent {
+export class TextareaComponent {
   @Input() moreList = false;
   @Input() isNoteActive!: boolean;
   @Input() noteContent = '';

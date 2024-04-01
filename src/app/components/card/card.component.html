@@ -25,7 +25,7 @@
     +
   </button>
   @if(value) {
-  <app-public-board-notes
+  <app-textarea
     [isNoteActive]="value"
     (isNoteChanges)="isNoteChanges($event)"
     (saveNoteClicked)="handleSaved($event, board.id)"

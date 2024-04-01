@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { PublicBoardNotesComponent } from '../public-board-notes/public-board-notes.component';
+import { TextareaComponent } from '../textarea/textarea.component';
 import { DashboardService } from '../../service/dashboard.service';
 import { Notes, PublicBoard } from '../../interfaces/dashBoard.interface';
 import { DashFunctionsService } from '../../service/dash-functions.service';
@@ -12,11 +12,11 @@ import { Observable, forkJoin } from 'rxjs';
 import { ColorPickerComponent } from '../color-picker/color-picker.component';
 
 @Component({
-  selector: 'app-public-board-name',
+  selector: 'app-card',
   standalone: true,
   imports: [
     MatIconModule,
-    PublicBoardNotesComponent,
+    TextareaComponent,
     MoreListComponent,
     NgStyle,
     NotesComponent,
@@ -24,12 +24,12 @@ import { ColorPickerComponent } from '../color-picker/color-picker.component';
     JsonPipe,
     ColorPickerComponent,
   ],
-  templateUrl: './public-board-name.component.html',
-  styleUrl: './public-board-name.component.scss',
+  templateUrl: './card.component.html',
+  styleUrl: './card.component.scss',
 })
-export class PublicBoardNameComponent implements OnInit {
-  @ViewChild(PublicBoardNotesComponent)
-  publicBoardNotesComponent!: PublicBoardNotesComponent;
+export class CardComponent implements OnInit {
+  @ViewChild(TextareaComponent)
+  publicBoardNotesComponent!: TextareaComponent;
   @Input() board!: PublicBoard;
   @Input() index!: number;
 
