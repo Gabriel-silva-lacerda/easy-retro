@@ -20,10 +20,8 @@
   <div class="containerList">
     <div class="boardList">
       @for (board of dataBoard; track $index) {
-      <app-public-board-name [board]="board" />
+      <app-public-board-name [board]="board" [index]="$index" />
       }
     </div>
   </div>
 </section>
-<!-- [selectedId]="notesId"
-(noteId)="addNotesId($event)" -->

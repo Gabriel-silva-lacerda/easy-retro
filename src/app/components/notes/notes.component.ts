@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DashFunctionsService } from '../../service/dash-functions.service';
 import { MoreListComponent } from '../more-list/more-list.component';
 import { Notes, PublicBoard } from '../../interfaces/dashBoard.interface';
@@ -6,11 +6,18 @@ import { MatIcon } from '@angular/material/icon';
 import { NgStyle } from '@angular/common';
 import { PublicBoardNotesComponent } from '../public-board-notes/public-board-notes.component';
 import { DashboardService } from '../../service/dashboard.service';
+import { ColorPickerComponent } from '../color-picker/color-picker.component';
 
 @Component({
   selector: 'app-notes',
   standalone: true,
-  imports: [MoreListComponent, MatIcon, NgStyle, PublicBoardNotesComponent],
+  imports: [
+    MoreListComponent,
+    MatIcon,
+    NgStyle,
+    PublicBoardNotesComponent,
+    ColorPickerComponent,
+  ],
   templateUrl: './notes.component.html',
   styleUrl: './notes.component.scss',
 })
@@ -19,7 +26,10 @@ export class NotesComponent {
   @Input() isActive!: number | null | boolean;
   @Input() note!: Notes;
   @Input() index!: number;
-  isTextarea = false;
+
+  @Output() deleteNote = new EventEmitter();
+
+  isComponent = false;
   isColor = false;
   selectedColor: string | null = null;
 
@@ -31,24 +41,19 @@ export class NotesComponent {
   isActiveMore = (index: number) =>
     (this.isActive = this.isActive === index ? null : index);
 
-  isColorActive = (boll: boolean) => (this.isColor = boll);
+  isColorActive = (boll: boolean) => {
+    this.isActive = false;
+    this.isColor = boll;
+  };
 
   increaseLike = (noteId: string | undefined) =>
-    this.dashFunctionsService.increaseOrDecreaseLike(
-      this.notes,
-      noteId,
-      true
-    );
+    this.dashFunctionsService.increaseOrDecreaseLike(this.notes, noteId, true);
 
   decreaseLike = (noteId: string | undefined) =>
-    this.dashFunctionsService.increaseOrDecreaseLike(
-      this.notes,
-      noteId,
-      false
-    );
+    this.dashFunctionsService.increaseOrDecreaseLike(this.notes, noteId, false);
 
-  isActiveTextarea = (boll: boolean) => {
-    this.isTextarea = boll;
+  isActiveComponent = (boll: boolean) => {
+    this.isComponent = boll;
     this.isActive = boll;
   };
 
@@ -56,7 +61,7 @@ export class NotesComponent {
     this.isColor = false;
     this.note.background = color;
 
-    this.dashboardService.updateNotes(this.note).subscribe({
+    this.dashboardService.updateNote(this.note).subscribe({
       error: (error) => {
         console.error(error);
       },

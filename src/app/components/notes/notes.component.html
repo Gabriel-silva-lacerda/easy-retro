@@ -1,24 +1,15 @@
-@if(!isTextarea) {
+@if(!isComponent){
 <li class="noteLi" [ngStyle]="{ 'background-color': note.background }">
   @if(isActive === index || isActive ) {
   <app-more-list
-    [note]="note"
-    (isActiveEdit)="isActiveTextarea($event)"
-    (desactiveMore)="isActiveTextarea($event)"
+    [data]="note"
+    (isActiveEdit)="isActiveComponent($event)"
     (isColor)="isColorActive($event)"
   />
   } @if(isColor) {
-  <ul class="color">
-    <li style="background-color: red" (click)="changeColor('red')"></li>
-    <li style="background-color: #208eed" (click)="changeColor('#208eed')"></li>
-    <li style="background-color: green" (click)="changeColor('green')"></li>
-    <li style="background-color: yellow" (click)="changeColor('yellow')"></li>
-    <li style="background-color: orange" (click)="changeColor('orange')"></li>
-    <li style="background-color: purple" (click)="changeColor('purple')"></li>
-    <li style="background-color: pink" (click)="changeColor('pink')"></li>
-    <li style="background-color: brown" (click)="changeColor('brown')"></li>
-  </ul>
+  <app-color-picker (colorSelected)="changeColor($event)" />
   }
+
   <div class="contentContainer">
     <span>{{ note.content }}</span>
     <button class="buttonMore" (click)="isActiveMore(index)">
@@ -42,11 +33,11 @@
     <span class="like">{{ note.likes }}</span>
   </div>
 </li>
-} @if (isTextarea) {
+} @if (isComponent) {
 <app-public-board-notes
   [note]="note"
   [noteContent]="note.content"
-  [moreList]="isTextarea"
-  (isNoteChanges)="isActiveTextarea($event)"
+  [moreList]="isComponent"
+  (isNoteChanges)="isActiveComponent($event)"
 />
 }

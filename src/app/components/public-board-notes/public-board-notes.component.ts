@@ -54,7 +54,7 @@ export class PublicBoardNotesComponent {
 
       this.note.content = this.noteContent;
 
-      this.dashboardService.updateNotes(this.note).subscribe({
+      this.dashboardService.updateNote(this.note).subscribe({
         error: (error) => {
           console.error('Erro ao atualizar likes:', error);
         },

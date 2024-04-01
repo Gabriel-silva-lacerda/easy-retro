@@ -1,33 +1,10 @@
 @import "../../../styles/variables.scss";
 
 .noteLi {
-  background: red;
+  background: $primary-color;
   margin-bottom: 0.8rem;
   padding: 0.6rem;
-
   position: relative;
-
-  .color {
-    position: absolute;
-    background: $white;
-    right: 0;
-    top: 0;
-
-    z-index: 100;
-    max-width: 150px;
-    width: 100%;
-    padding: 0.7rem;
-    border-radius: 3px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.2rem;
-    li {
-      cursor: pointer;
-      width: 20px;
-      height: 20px;
-      background: red;
-    }
-  }
 
   .contentContainer {
     display: flex;

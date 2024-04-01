@@ -14,6 +14,7 @@ import { DashboardService } from '../../service/dashboard.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { LoadingService } from '../../service/loading.service';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-board-modal',
@@ -32,11 +33,12 @@ import { LoadingService } from '../../service/loading.service';
 export class BoardModalComponent implements OnInit {
   dashForm!: FormGroup;
   bothFieldsValid = false;
+  id!: string | undefined;
 
   constructor(
     private dialogRef: MatDialogRef<BoardModalComponent>,
     private formBuilder: FormBuilder,
-    private dashBoardService: DashboardService,
+    private dashboardService: DashboardService,
     private loadingService: LoadingService,
     private router: Router
   ) {}
@@ -58,26 +60,45 @@ export class BoardModalComponent implements OnInit {
       this.loadingService.setLoadingState(true);
       document.body.style.overflow = 'hidden';
 
-      const modalValue = {
+      const modalBoardValue = {
         projectName: this.dashForm.value.projectName,
-        taskName: this.dashForm.value.taskName,
         date: new Date(),
       };
 
-      this.dashBoardService.postDataDashboard(modalValue).subscribe({
-        next: ({ id }) => {
-          setTimeout(() => {
-            document.body.style.overflow = 'initial';
+      const modalPublicBoardValue = {
+        taskName: this.dashForm.value.taskName,
+        date: new Date(),
+        boardId: '',
+      };
+
+      this.dashboardService
+        .postDataDashboard(modalBoardValue)
+        .pipe(
+          switchMap((dataPublicboard) => {
+            modalPublicBoardValue.boardId = dataPublicboard.id as string;
+            return this.dashboardService.postDataPublicboard(
+              modalPublicBoardValue
+            );
+          })
+        )
+        .subscribe({
+          next: () => {
             this.closeModal();
+            setTimeout(() => {
+              document.body.style.overflow = 'initial';
+              this.closeModal();
+              this.loadingService.setLoadingState(false);
+              this.router.navigate([
+                '/publicboard',
+                modalPublicBoardValue.boardId,
+              ]);
+            }, 3000);
+          },
+          error: (error) => {
+            console.error(error);
             this.loadingService.setLoadingState(false);
-            this.router.navigate(['/publicboard', id]);
-          }, 3000);
-        },
-        error: (error) => {
-          console.error(error);
-          this.loadingService.setLoadingState(false);
-        },
-      });
+          },
+        });
     }
   }
 }

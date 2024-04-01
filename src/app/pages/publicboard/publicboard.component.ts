@@ -8,8 +8,8 @@ import { DashboardService } from '../../service/dashboard.service';
 import { PublicBoard } from '../../interfaces/dashBoard.interface';
 import { ActivatedRoute } from '@angular/router';
 import { PublicBoardModalComponent } from '../../shared/public-board-modal/public-board-modal.component';
-import { forkJoin } from 'rxjs';
 import { IdService } from '../../service/id.service';
+import { DashFunctionsService } from '../../service/dash-functions.service';
 
 @Component({
   selector: 'app-publicboard',
@@ -33,22 +33,17 @@ export class PublicboardComponent implements OnInit {
     private dashboardService: DashboardService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    private idService: IdService
+    private idService: IdService,
+    private dashFunctionsService: DashFunctionsService
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.idService.setId(id);
-      forkJoin({
-        dataPublicboard: this.dashboardService.getDataPublicboard(),
-        cardDetails: this.dashboardService.getDataPublicboardById(id),
-      }).subscribe({
-        next: ({ dataPublicboard, cardDetails }) => {
-          const filteredData = dataPublicboard.filter(
-            (board) => board.id_card === id
-          );
-          filteredData.push(...cardDetails);
+      this.dashboardService.getDataPublicboard().subscribe({
+        next: (data) => {
+          const filteredData = data.filter((board) => board.boardId === id);
           this.dashboardService.dataPublicboard.set(filteredData);
           this.dataBoard = filteredData;
         },
@@ -57,6 +52,12 @@ export class PublicboardComponent implements OnInit {
         },
       });
     }
+
+    this.dashFunctionsService.deletePublic.subscribe((idPublicBoard) => {
+      this.dataBoard = this.dataBoard.filter(
+        (data) => data.id !== idPublicBoard
+      );
+    });
   }
 
   addNotesId = (id: string) => (this.notesId = id);

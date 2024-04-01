@@ -1,9 +1,25 @@
 <div class="notesName">
+  @if(isActiveMoreList === index || isActiveMoreList) {
+  <app-more-list
+    [data]="board"
+    (isActiveEdit)="showComponent($event, 'edit')"
+    (isColor)="showComponent($event)"
+  />
+  } @if(isColor) {
+  <app-color-picker (colorSelected)="changeColor($event)" />
+  }
+
   <div class="taskContainer">
+    @if(!isShowComponent) {
     <span>{{ board.taskName }}</span>
-    <button class="buttonMore">
+
+    <button class="buttonMore" (click)="isActiveMore(index)">
       <mat-icon> more_vert </mat-icon>
     </button>
+    } @else {
+    <input type="text" autofocus [(ngModel)]="board.taskName" />
+    <button (click)="editBoardName()">save</button>
+    }
   </div>
   <button class="addButton" (click)="emitAddNoteClicked(); value = true">
     +
@@ -25,4 +41,5 @@
     />
     }
   </ul>
+  {{ notes | json }}
 </div>

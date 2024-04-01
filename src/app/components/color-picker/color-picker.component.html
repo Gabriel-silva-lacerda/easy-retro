@@ -1,0 +1,6 @@
+<ul class="color">
+  @for (color of colors ; track $index) {
+  <li [style.background-color]="color" (click)="changeColor(color)"></li>
+  }
+  
+</ul>

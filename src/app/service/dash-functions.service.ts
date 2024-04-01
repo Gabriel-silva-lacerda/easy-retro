@@ -1,11 +1,21 @@
-import { ChangeDetectorRef, Injectable, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Injectable,
+  OnInit,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { DashBoard, Notes } from '../interfaces/dashBoard.interface';
+import { forkJoin, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DashFunctionsService {
+  @Output() deleteNote = new EventEmitter();
+  @Output() deletePublic = new EventEmitter();
+
   constructor(private dashboardService: DashboardService) {}
 
   increaseOrDecreaseLike(
@@ -17,7 +27,7 @@ export class DashFunctionsService {
     if (noteIndex !== -1) {
       increase ? notes[noteIndex].likes++ : notes[noteIndex].likes--;
 
-      this.dashboardService.updateNotes(notes[noteIndex]).subscribe({
+      this.dashboardService.updateNote(notes[noteIndex]).subscribe({
         error: (error) => {
           console.error('Erro ao atualizar likes:', error);
         },
@@ -52,24 +62,84 @@ export class DashFunctionsService {
     });
   }
 
-  deleteNotes(id: string | undefined, id_card: any) {
+  deleteNotes(id: string | undefined) {
     this.dashboardService.deleteNotes(id).subscribe({
       next: () => {
-        const notes = this.dashboardService.dataNotes();
-        const index = notes.findIndex(
-          (note) => note.id_card === id_card && note.id === id
-        );
-
-        if (index !== -1) {
-          console.log(index);
-          notes.splice(index, 1);
-          this.dashboardService.dataNotes.set(notes);
-          console.log(notes);
-        }
+        this.deleteNote.emit(id);
       },
       error: (error) => {
         console.error('Erro ao excluir a nota:', error);
       },
     });
+  }
+
+  deletePublicBoard(id: string | undefined) {
+    this.dashboardService.deletePublicBoard(id).subscribe({
+      next: () => {
+        this.deletePublic.emit(id);
+      },
+      error: (error) => {
+        console.error('Erro ao excluir a board:', error);
+      },
+    });
+  }
+
+  deletePublicBoard3(id: string | undefined) {
+    const obj = {
+      cardId: id,
+    };
+
+    this.dashboardService
+      .deletePublicBoard(id)
+      .pipe(
+        switchMap(() => {
+          this.deletePublic.emit(id);
+          return this.dashboardService.getNotes(obj);
+        })
+      )
+      .pipe(
+        switchMap((notes) => {
+          this.deleteNote.emit(id);
+          const deleteNoteRequests = notes.map((note) =>
+            this.dashboardService.deleteNotes(note.id)
+          );
+          return forkJoin(deleteNoteRequests);
+        })
+      )
+      .subscribe({
+        next: () => {
+          //
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+  }
+
+  deletePublicBoard2(id: string | undefined) {
+    const obj = {
+      cardId: id,
+    };
+
+    this.dashboardService
+      .getNotes(obj)
+      .pipe(
+        switchMap((notes) => {
+          const deleteNoteRequests = notes.map((note) => {
+            this.deleteNote.emit(note.id);
+            return this.dashboardService.deleteNotes(note.id);
+          });
+          return forkJoin(deleteNoteRequests);
+        })
+      )
+      .pipe(switchMap(() => this.dashboardService.deletePublicBoard(id)))
+      .subscribe({
+        next: () => {
+          this.deletePublic.emit(id);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
   }
 }
