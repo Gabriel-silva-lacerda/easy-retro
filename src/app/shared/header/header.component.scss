@@ -8,6 +8,8 @@ header {
   div {
     padding: 1rem 0;
     @include flexBox(space-between, 0);
+    gap: 0.3rem;
+    flex-wrap: wrap;
 
     .logo {
       font-size: 1.3rem;

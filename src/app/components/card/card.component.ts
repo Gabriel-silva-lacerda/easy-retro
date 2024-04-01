@@ -19,7 +19,7 @@ import { NotesComponent } from '../notes/notes.component';
 import { FormsModule } from '@angular/forms';
 import { Observable, forkJoin } from 'rxjs';
 import { ColorPickerComponent } from '../color-picker/color-picker.component';
-import { FilterService } from '../../service/filter.service';
+
 
 @Component({
   selector: 'app-card',
@@ -83,14 +83,13 @@ export class CardComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnChanges(): void {
-
-
-    // this.notes = this.dashFunctionsService.filterData(
-    //   this.filterNotes,
-    //   this.valueFilterNotes,
-    //   'content'
-    // );
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['valueFilterNotes'])
+      this.notes = this.dashFunctionsService.filterData(
+        this.filterNotes,
+        this.valueFilterNotes,
+        'content'
+      );
   }
 
   handleSaved(value: string, id: string | undefined) {

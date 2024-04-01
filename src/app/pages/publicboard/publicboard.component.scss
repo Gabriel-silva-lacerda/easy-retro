@@ -6,15 +6,23 @@
     @include maxWidth();
     @include flexBox(flex-end, 0.7rem);
     margin: 1rem auto !important;
+    flex-wrap: wrap;
 
     .searchContainer {
       @include flexBox(center, 0.4rem);
+      @media (max-width: 576px) {
+        width: 100%;
+      }
 
       button {
         background: none;
         border: none;
         @include flexBox(center, 0.7rem);
         position: relative;
+
+        @media (max-width: 576px) {
+          display: none;
+        }
 
         mat-icon {
           font-size: 1.1rem;
@@ -68,6 +76,10 @@
         @include flexBox(center, 0rem);
         background: none;
 
+        @media (max-width: 576px) {
+          display: none;
+        }
+
         mat-icon {
           font-size: 1.2rem;
           width: 20px;
@@ -96,7 +108,12 @@
 
     .boardList {
       display: flex;
+
       margin: 1rem 0 0 0;
+
+      @media (max-width: 576px) {
+        flex-direction: column;
+      }
 
       &.boardList-block {
         display: block;

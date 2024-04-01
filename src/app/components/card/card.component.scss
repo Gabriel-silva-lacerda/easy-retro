@@ -36,12 +36,17 @@
     }
     .taskContainer {
       @include flexBox(space-between, 0.6rem);
+      text-transform: capitalize;
 
       span {
         font-size: 1rem;
         font-weight: 500;
         color: $black;
         display: block;
+
+        @media (max-width: 576px) {
+          border-bottom: 2px solid $primary-color;
+        }
       }
 
       .buttonMore {
