@@ -1,5 +1,11 @@
 @if(!isComponent){
-<li class="noteLi" [ngStyle]="{ 'background-color': note.background }">
+<li
+  class="noteLi"
+  [ngStyle]="{
+    'margin-right': layout === 'block' ? '1rem' : '0rem',
+    'background-color': note.background
+  }"
+>
   @if(isActive === index || isActive ) {
   <app-more-list
     [data]="note"

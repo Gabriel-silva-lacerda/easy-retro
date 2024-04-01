@@ -1,16 +1,22 @@
 <section class="publicBoardContainer">
   <div class="actionsContainer">
     <div class="searchContainer">
-      <button>
+      <!--  -->
+      <button (mouseover)="showData = true" (mouseout)="showData = false">
         <mat-icon> visibility </mat-icon>
+        <div class="visibilityContainer" [class.show]="showData">
+          <span class="lengthCards">{{ dataCardName.length }}</span>
+          <span class="lengthName">Cards</span>
+        </div>
       </button>
-      <app-filter-input />
+
+      <app-filter-input (filterChange)="searchData($event)" />
     </div>
     <div class="layoutContainer">
-      <button>
+      <button (click)="toggleDisplay('flex')">
         <mat-icon>view_column_2</mat-icon>
       </button>
-      <button>
+      <button (click)="toggleDisplay('block')">
         <mat-icon> splitscreen </mat-icon>
       </button>
     </div>
@@ -18,9 +24,20 @@
   </div>
 
   <div class="containerList">
-    <div class="boardList">
-      @for (board of dataBoard; track $index) {
-      <app-card [board]="board" [index]="$index" />
+    <div
+      class="boardList"
+      [ngClass]="{
+        boardList: displayType === 'flex',
+        'boardList-block': displayType === 'block'
+      }"
+    >
+      @for (cardName of dataCardName; track $index) {
+      <app-card
+        [cardName]="cardName"
+        [index]="$index"
+        [valueFilterNotes]="filterNotes"
+        [layout]="displayType"
+      />
       }
     </div>
   </div>

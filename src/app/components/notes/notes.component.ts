@@ -7,6 +7,7 @@ import { NgStyle } from '@angular/common';
 import { TextareaComponent } from '../textarea/textarea.component';
 import { DashboardService } from '../../service/dashboard.service';
 import { ColorPickerComponent } from '../color-picker/color-picker.component';
+import { FilterService } from '../../service/filter.service';
 
 @Component({
   selector: 'app-notes',
@@ -26,16 +27,18 @@ export class NotesComponent {
   @Input() isActive!: number | null | boolean;
   @Input() note!: Notes;
   @Input() index!: number;
-
+  @Input() layout: 'flex' | 'block' = 'block';
+  
   @Output() deleteNote = new EventEmitter();
 
   isComponent = false;
   isColor = false;
   selectedColor: string | null = null;
 
+
   constructor(
     private dashFunctionsService: DashFunctionsService,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
   ) {}
 
   isActiveMore = (index: number) =>

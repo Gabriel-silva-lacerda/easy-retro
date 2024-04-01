@@ -142,4 +142,9 @@ export class DashFunctionsService {
         },
       });
   }
+
+  filterData = (data: any[], value: string, propertyName: string) =>
+    data.filter((item) =>
+      item[propertyName].toLowerCase().includes(value.toLowerCase())
+    );
 }

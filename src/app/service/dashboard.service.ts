@@ -6,7 +6,7 @@ import {
   DashBoard,
   PublicBoard,
 } from '../interfaces/dashBoard.interface';
-import { Observable, Subject, forkJoin, map, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +16,7 @@ export class DashboardService {
 
   dataDash: WritableSignal<DashBoard[]> = signal([]);
   searchDash: WritableSignal<DashBoard[]> = signal([]);
+  searchPublicboard: WritableSignal<any> = signal([]);
   dataPublicboard: WritableSignal<PublicBoard[]> = signal([]);
   dataNotes: WritableSignal<Notes[]> = signal([]);
 

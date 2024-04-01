@@ -1,7 +1,7 @@
 <div class="notesName">
   @if(isActiveMoreList === index || isActiveMoreList) {
   <app-more-list
-    [data]="board"
+    [data]="cardName"
     (isActiveEdit)="showComponent($event, 'edit')"
     (isColor)="showComponent($event)"
   />
@@ -11,13 +11,13 @@
 
   <div class="taskContainer">
     @if(!isShowComponent) {
-    <span>{{ board.taskName }}</span>
+    <span>{{ cardName.taskName }}</span>
 
     <button class="buttonMore" (click)="isActiveMore(index)">
       <mat-icon> more_vert </mat-icon>
     </button>
     } @else {
-    <input type="text" autofocus [(ngModel)]="board.taskName" />
+    <input type="text" autofocus [(ngModel)]="cardName.taskName" />
     <button (click)="editBoardName()">save</button>
     }
   </div>
@@ -28,12 +28,19 @@
   <app-textarea
     [isNoteActive]="value"
     (isNoteChanges)="isNoteChanges($event)"
-    (saveNoteClicked)="handleSaved($event, board.id)"
+    (saveNoteClicked)="handleSaved($event, cardName.id)"
   />
   }
-  <ul class="list">
+  <ul
+    class="list"
+    [ngClass]="{
+      list: layout === 'flex',
+      listBlock: layout === 'block'
+    }"
+  >
     @for (note of notes ; track $index) {
     <app-notes
+      [layout]="layout"
       [notes]="notes"
       [note]="note"
       [isActive]="isActive"

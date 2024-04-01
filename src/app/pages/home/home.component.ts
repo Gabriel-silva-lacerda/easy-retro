@@ -52,8 +52,6 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  openDialog = () => this.dialog.open(BoardModalComponent);
-
   toggleButtonState() {
     const newOrder = this.selectedButton === 'asc' ? 'desc' : 'asc';
     if (newOrder !== this.selectedButton) {
@@ -61,11 +59,12 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  searchData(value: string) {
-    this.cardDash = this.dashboardService.searchDash().filter((cardValue) => {
-      return cardValue.projectName.toLowerCase().includes(value);
-    });
-  }
+  searchData = (value: string) =>
+    (this.cardDash = this.dashFunctionsService.filterData(
+      this.dashboardService.searchDash(),
+      value,
+      'projectName'
+    ));
 
   sortCardDash(order: 'asc' | 'desc' = 'asc') {
     this.cardDash = this.dashFunctionsService.sortCardDash(
@@ -74,4 +73,6 @@ export class HomeComponent implements OnInit {
     );
     this.selectedButton = order;
   }
+
+  openDialog = () => this.dialog.open(BoardModalComponent);
 }

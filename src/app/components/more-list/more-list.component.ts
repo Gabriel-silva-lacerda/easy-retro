@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { DashboardService } from '../../service/dashboard.service';
 import { Notes, PublicBoard } from '../../interfaces/dashBoard.interface';
 import { DashFunctionsService } from '../../service/dash-functions.service';
 

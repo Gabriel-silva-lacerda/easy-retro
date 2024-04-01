@@ -1,15 +1,25 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TextareaComponent } from '../textarea/textarea.component';
 import { DashboardService } from '../../service/dashboard.service';
 import { Notes, PublicBoard } from '../../interfaces/dashBoard.interface';
 import { DashFunctionsService } from '../../service/dash-functions.service';
 import { MoreListComponent } from '../more-list/more-list.component';
-import { JsonPipe, NgStyle } from '@angular/common';
+import { JsonPipe, NgClass, NgStyle } from '@angular/common';
 import { NotesComponent } from '../notes/notes.component';
 import { FormsModule } from '@angular/forms';
 import { Observable, forkJoin } from 'rxjs';
 import { ColorPickerComponent } from '../color-picker/color-picker.component';
+import { FilterService } from '../../service/filter.service';
 
 @Component({
   selector: 'app-card',
@@ -23,22 +33,28 @@ import { ColorPickerComponent } from '../color-picker/color-picker.component';
     FormsModule,
     JsonPipe,
     ColorPickerComponent,
+    NgClass,
+    NgStyle,
   ],
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnInit, OnChanges {
   @ViewChild(TextareaComponent)
   publicBoardNotesComponent!: TextareaComponent;
-  @Input() board!: PublicBoard;
+  @Input() cardName!: PublicBoard;
   @Input() index!: number;
+  @Input() valueFilterNotes!: string;
+  @Input() layout: any;
 
   value = false;
   isActive: number | null | boolean = null;
   isActiveMoreList: number | null | boolean = null;
   isShowComponent = false;
   isColor = false;
+
   notes: Notes[] = [];
+  filterNotes: Notes[] = [];
 
   constructor(
     private dashboardService: DashboardService,
@@ -47,7 +63,7 @@ export class CardComponent implements OnInit {
 
   ngOnInit(): void {
     const obj = {
-      cardId: this.board.id,
+      cardId: this.cardName.id,
     };
 
     this.dashFunctionsService.deleteNote.subscribe((deletedNoteId) => {
@@ -63,7 +79,18 @@ export class CardComponent implements OnInit {
 
     this.dashboardService.getNotes(obj).subscribe((data) => {
       this.notes = data;
+      this.filterNotes = data;
     });
+  }
+
+  ngOnChanges(): void {
+
+
+    // this.notes = this.dashFunctionsService.filterData(
+    //   this.filterNotes,
+    //   this.valueFilterNotes,
+    //   'content'
+    // );
   }
 
   handleSaved(value: string, id: string | undefined) {
@@ -71,6 +98,7 @@ export class CardComponent implements OnInit {
     this.dashboardService.postNotes(newNote).subscribe({
       next: (response) => {
         this.notes.push(response);
+        this.filterNotes = this.notes;
       },
       error: (error) => {
         console.error('Erro ao adicionar nota:', error);
@@ -85,7 +113,7 @@ export class CardComponent implements OnInit {
 
   editBoardName() {
     this.isShowComponent = false;
-    this.dashboardService.updatePublicBoard(this.board).subscribe({
+    this.dashboardService.updatePublicBoard(this.cardName).subscribe({
       error: (error) => {
         console.error(error);
       },
@@ -94,6 +122,8 @@ export class CardComponent implements OnInit {
 
   changeColor(background: string) {
     this.isColor = false;
+
+    console.log(this.layout);
 
     const observables = this.notes.map((note) => {
       const updatedNote = { ...note, background };

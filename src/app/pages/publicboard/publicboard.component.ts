@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PublicBoardModalComponent } from '../../shared/public-board-modal/public-board-modal.component';
 import { IdService } from '../../service/id.service';
 import { DashFunctionsService } from '../../service/dash-functions.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-publicboard',
@@ -20,14 +21,18 @@ import { DashFunctionsService } from '../../service/dash-functions.service';
     TextareaComponent,
     CardComponent,
     TextareaComponent,
+    NgClass,
   ],
   templateUrl: './publicboard.component.html',
   styleUrl: './publicboard.component.scss',
 })
 export class PublicboardComponent implements OnInit {
-  dataBoard!: PublicBoard[];
+  dataCardName!: PublicBoard[];
   addNoteClicked!: boolean;
   notesId!: string | undefined;
+  filterNotes!: string;
+  showData: boolean = false;
+  displayType: 'flex' | 'block' = 'flex';
 
   constructor(
     private dashboardService: DashboardService,
@@ -45,7 +50,7 @@ export class PublicboardComponent implements OnInit {
         next: (data) => {
           const filteredData = data.filter((board) => board.boardId === id);
           this.dashboardService.dataPublicboard.set(filteredData);
-          this.dataBoard = filteredData;
+          this.dataCardName = filteredData;
         },
         error: (error) => {
           console.error(error);
@@ -54,12 +59,17 @@ export class PublicboardComponent implements OnInit {
     }
 
     this.dashFunctionsService.deletePublic.subscribe((idPublicBoard) => {
-      this.dataBoard = this.dataBoard.filter(
+      this.dataCardName = this.dataCardName.filter(
         (data) => data.id !== idPublicBoard
       );
     });
   }
 
+  toggleDisplay = (type: 'flex' | 'block') => (this.displayType = type);
+  
+  searchData = (value: string) => (this.filterNotes = value);
+
   addNotesId = (id: string) => (this.notesId = id);
+
   openDialog = () => this.dialog.open(PublicBoardModalComponent);
 }

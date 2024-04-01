@@ -75,6 +75,11 @@
 
     .list {
       width: 100%;
+      // display: flex;
+    }
+
+    .listBlock {
+      display: flex;
     }
   }
 }

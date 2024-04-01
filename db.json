@@ -52,6 +52,12 @@
       "taskName": "flavia",
       "date": "2024-03-27T17:51:55.155Z",
       "boardId": "91a2"
+    },
+    {
+      "id": "6f38",
+      "taskName": "fsad",
+      "date": "2024-04-01T15:59:05.458Z",
+      "boardId": "91a2"
     }
   ],
   "notes": [
@@ -74,7 +80,7 @@
       "content": "1",
       "cardId": "4042",
       "likes": 0,
-      "background": ""
+      "background": "red"
     },
     {
       "id": "a394",
@@ -82,6 +88,20 @@
       "cardId": "df06",
       "likes": 0,
       "background": ""
+    },
+    {
+      "id": "d996",
+      "content": "dasd",
+      "cardId": "4042",
+      "likes": 0,
+      "background": "purple"
+    },
+    {
+      "id": "6f94",
+      "content": "cxzcd",
+      "cardId": "4042",
+      "likes": 0,
+      "background": "purple"
     }
   ]
 }
