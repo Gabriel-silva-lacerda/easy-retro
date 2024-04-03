@@ -2,6 +2,7 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { Board, Notes, Card } from '../interfaces/dashBoard.interface';
 import { forkJoin, switchMap } from 'rxjs';
+import { LoadingService } from './loading.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,10 @@ import { forkJoin, switchMap } from 'rxjs';
 export class DashFunctionsService {
   @Output() deleteCardEmit = new EventEmitter();
 
-  constructor(private dashboardService: DashboardService) {}
+  constructor(
+    private dashboardService: DashboardService,
+    private loadingService: LoadingService
+  ) {}
 
   increaseOrDecreaseLike(
     card: Card,
@@ -44,7 +48,7 @@ export class DashFunctionsService {
     const boards = this.dashboardService.dataBoards();
     const index = boards.findIndex((card) => card.id === id);
     const isIndexValid = index !== -1;
-
+    this.loadingService.setLoadingForId(id as string, true);
     this.dashboardService
       .getDataCards()
       .pipe(
@@ -66,6 +70,7 @@ export class DashFunctionsService {
         })
       )
       .subscribe({
+        next: () => this.loadingService.setLoadingForId(id as string, false),
         error: (error) => console.error('Error:', error),
       });
   }
