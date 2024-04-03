@@ -30,7 +30,9 @@
         'boardList-block': displayType === 'block'
       }"
     >
-      @for (card of cards; track $index) {
+      @if(isLoading) {
+      <app-spinner />
+      } @if(!isLoading) { @for (card of cards; track $index) {
       <app-card
         [cards]="cards"
         [card]="card"
@@ -38,7 +40,7 @@
         [valueFilterNotes]="valueFilterNotes"
         [layout]="displayType"
       />
-      }
+      } }
     </div>
   </div>
 </section>

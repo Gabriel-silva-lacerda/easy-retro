@@ -36,11 +36,16 @@
           <button>+</button>
           <span>Add board</span>
         </div>
+        @if(isLoadingBoard) {
+
+        <app-spinner />
+        } @if(!isLoadingBoard) {
         <ul>
           @for (card of cardDash; track $index) {
           <app-card-board [cardContent]="card" />
           }
         </ul>
+        }
       </div>
     </div>
   </div>

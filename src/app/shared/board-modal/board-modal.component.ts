@@ -34,6 +34,7 @@ export class BoardModalComponent implements OnInit {
   dashForm!: FormGroup;
   bothFieldsValid = false;
   id!: string | undefined;
+  isLoading = false;
 
   constructor(
     private dialogRef: MatDialogRef<BoardModalComponent>,
@@ -57,7 +58,8 @@ export class BoardModalComponent implements OnInit {
 
   onSubmit(): void {
     if (this.dashForm.valid) {
-      this.loadingService.setLoadingState(true);
+      this.isLoading = true;
+      this.loadingService.setLoadingState(this.isLoading);
       document.body.style.overflow = 'hidden';
 
       const modalBoardValue = {
@@ -77,26 +79,28 @@ export class BoardModalComponent implements OnInit {
         .pipe(
           switchMap((dataCards) => {
             modalPublicBoardValue.boardId = dataCards.id as string;
-            return this.dashboardService.postDataCards(
-              modalPublicBoardValue
-            );
+            return this.dashboardService.postDataCards(modalPublicBoardValue);
           })
         )
         .subscribe({
           next: () => {
             this.closeModal();
-            setTimeout(() => {
-              document.body.style.overflow = 'initial';
-              this.closeModal();
-              this.loadingService.setLoadingState(false);
+
+            document.body.style.overflow = 'initial';
+            this.closeModal();
+            this.isLoading = false;
+            this.loadingService.setLoadingState(this.isLoading);
+
+            if (!this.isLoading) {
               this.router.navigate([
                 '/publicboard',
                 modalPublicBoardValue.boardId,
               ]);
-            }, 2000);
+            }
           },
           error: (error) => {
             console.error(error);
+            this.isLoading = false;
             this.loadingService.setLoadingState(false);
           },
         });

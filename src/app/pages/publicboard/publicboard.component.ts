@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PublicBoardModalComponent } from '../../shared/public-board-modal/public-board-modal.component';
 import { IdService } from '../../service/id.service';
 import { NgClass } from '@angular/common';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
 
 @Component({
   selector: 'app-publicboard',
@@ -21,6 +22,7 @@ import { NgClass } from '@angular/common';
     CardComponent,
     TextareaComponent,
     NgClass,
+    SpinnerComponent,
   ],
   templateUrl: './publicboard.component.html',
   styleUrl: './publicboard.component.scss',
@@ -34,6 +36,8 @@ export class PublicboardComponent implements OnInit {
   showData: boolean = false;
   displayType: 'flex' | 'block' = 'flex';
 
+  isLoading = false;
+
   constructor(
     private dashboardService: DashboardService,
     private route: ActivatedRoute,
@@ -45,16 +49,19 @@ export class PublicboardComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.idService.setId(id);
+      this.isLoading = true;
       this.dashboardService.getDataCards().subscribe({
         next: (data) => {
           const filteredData = data.filter((board) => board.boardId === id);
           this.dashboardService.dataCards.set(filteredData);
           this.dashboardService.searchNotes.set(filteredData);
+
           this.cards = filteredData;
         },
         error: (error) => {
           console.error(error);
         },
+        complete: () => (this.isLoading = false),
       });
     }
   }

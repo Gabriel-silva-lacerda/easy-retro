@@ -2,6 +2,7 @@
 @import "../../../styles/variables.scss";
 
 .publicBoardContainer {
+  position: relative;
   .actionsContainer {
     @include maxWidth();
     @include flexBox(flex-end, 0.7rem);

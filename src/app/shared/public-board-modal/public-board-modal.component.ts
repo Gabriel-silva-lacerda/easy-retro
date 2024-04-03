@@ -11,6 +11,7 @@ import {
 import { DashboardService } from '../../service/dashboard.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { IdService } from '../../service/id.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-public-board-modal',
@@ -20,6 +21,7 @@ import { IdService } from '../../service/id.service';
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './public-board-modal.component.html',
   styleUrl: './public-board-modal.component.scss',
@@ -27,6 +29,8 @@ import { IdService } from '../../service/id.service';
 export class PublicBoardModalComponent implements OnInit {
   publicBoard!: FormGroup;
   id!: string | null;
+  isLoading = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private dashBoardService: DashboardService,
@@ -54,10 +58,12 @@ export class PublicBoardModalComponent implements OnInit {
         boardId: this.id,
         notes: [],
       };
+      this.isLoading = true;
 
       this.dashBoardService.postDataCards(modalValue).subscribe({
         next: () => {
           this.closeModal();
+          this.isLoading = false;
         },
         error: (error) => {
           console.error(error);

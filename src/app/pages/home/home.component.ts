@@ -12,6 +12,7 @@ import { RouterOutlet } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoadingService } from '../../service/loading.service';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +26,7 @@ import { LoadingService } from '../../service/loading.service';
     NgClass,
     MatProgressSpinnerModule,
     BoardModalComponent,
+    SpinnerComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -33,6 +35,7 @@ export class HomeComponent implements OnInit {
   cardDash: Board[] = [];
   selectedButton: 'asc' | 'desc' = 'asc';
   isLoading = false;
+  isLoadingBoard = false;
 
   constructor(
     public dialog: MatDialog,
@@ -42,9 +45,16 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dashboardService.getDataBoards().subscribe(() => {
-      this.cardDash = this.dashboardService.dataBoards();
-      this.sortBoardDash(this.selectedButton);
+    this.isLoadingBoard = true;
+    this.dashboardService.getDataBoards().subscribe({
+      next: () => {
+        this.cardDash = this.dashboardService.dataBoards();
+        this.sortBoardDash(this.selectedButton);
+        this.isLoadingBoard = false;
+      },
+      error: (error) => {
+        console.log(error);
+      },
     });
 
     this.loadingService.isLoading$.subscribe((isLoading) => {

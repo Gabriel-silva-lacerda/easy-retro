@@ -9,9 +9,17 @@
     <input matInput formControlName="taskName" />
   </mat-form-field>
   <div class="buttonContainer">
-    <button mat-raised-button [disabled]="!publicBoard.valid">Create</button>
+    <button mat-raised-button [disabled]="!publicBoard.valid || isLoading">
+      @if(isLoading) { Loading... } @else { Create }
+    </button>
     <button mat-raised-button type="button" (click)="closeModal()">
       Cancel
     </button>
   </div>
+
+  @if (isLoading) {
+  <div class="loadingOverlay">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+  }
 </form>
