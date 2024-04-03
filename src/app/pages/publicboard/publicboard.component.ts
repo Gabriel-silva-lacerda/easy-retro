@@ -9,7 +9,6 @@ import { Card } from '../../interfaces/dashBoard.interface';
 import { ActivatedRoute } from '@angular/router';
 import { PublicBoardModalComponent } from '../../shared/public-board-modal/public-board-modal.component';
 import { IdService } from '../../service/id.service';
-import { DashFunctionsService } from '../../service/dash-functions.service';
 import { NgClass } from '@angular/common';
 
 @Component({
@@ -27,7 +26,7 @@ import { NgClass } from '@angular/common';
   styleUrl: './publicboard.component.scss',
 })
 export class PublicboardComponent implements OnInit {
-  cards!: Card[];
+  cards: Card[] = [];
 
   addNoteClicked!: boolean;
   notesId!: string | undefined;
@@ -39,11 +38,10 @@ export class PublicboardComponent implements OnInit {
     private dashboardService: DashboardService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    private idService: IdService,
-    private dashFunctionsService: DashFunctionsService
+    private idService: IdService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.idService.setId(id);
@@ -59,10 +57,6 @@ export class PublicboardComponent implements OnInit {
         },
       });
     }
-
-    this.dashFunctionsService.deleteCardEmit.subscribe((idPublicBoard) => {
-      this.cards = this.cards.filter((data) => data.id !== idPublicBoard);
-    });
   }
 
   toggleDisplay = (type: 'flex' | 'block') => (this.displayType = type);

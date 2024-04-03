@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 
 @Component({
   selector: 'app-color-picker',
@@ -9,19 +16,17 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class ColorPickerComponent {
   colors: string[] = [
-    'red',
+    '#8758ff',
     '#208eed',
-    'green',
-    'yellow',
-    'orange',
-    'purple',
-    'pink',
-    'brown',
+    '#009886',
+    '#e92c64',
+    '#2c4ac9',
+    '#ff772a',
+    '#4a5e86',
+    '#86724a',
   ];
 
   @Output() colorSelected = new EventEmitter<string>();
 
-  changeColor(color: string) {
-    this.colorSelected.emit(color);
-  }
+  changeColor = (color: string) => this.colorSelected.emit(color);
 }

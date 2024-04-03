@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.dashboardService.getDataBoards().subscribe(() => {
       this.cardDash = this.dashboardService.dataBoards();
-      this.sortCardDash(this.selectedButton);
+      this.sortBoardDash(this.selectedButton);
     });
 
     this.loadingService.isLoading$.subscribe((isLoading) => {
@@ -54,9 +54,7 @@ export class HomeComponent implements OnInit {
 
   toggleButtonState() {
     const newOrder = this.selectedButton === 'asc' ? 'desc' : 'asc';
-    if (newOrder !== this.selectedButton) {
-      this.selectedButton = newOrder;
-    }
+    if (newOrder !== this.selectedButton) this.selectedButton = newOrder;
   }
 
   searchData = (value: string) =>
@@ -66,8 +64,8 @@ export class HomeComponent implements OnInit {
       'projectName'
     ));
 
-  sortCardDash(order: 'asc' | 'desc' = 'asc') {
-    this.cardDash = this.dashFunctionsService.sortCardDash(
+  sortBoardDash(order: 'asc' | 'desc' = 'asc') {
+    this.cardDash = this.dashFunctionsService.sortBoardDash(
       this.cardDash,
       order
     );

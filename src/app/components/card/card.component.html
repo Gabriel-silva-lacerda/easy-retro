@@ -1,52 +1,63 @@
 <div class="notesName">
-  @if(isActiveMoreList === index || isActiveMoreList) {
-  <app-more-list
-    [data]="card"
-    (showEditComponent)="showComponent($event, 'edit')"
-    (showColorComponent)="showComponent($event)"
-    (showDeleteComponent)="showComponent($event)"
-  />
-  } @if(isColor) {
-  <app-color-picker (colorSelected)="changeColor($event)" />
-  }
-
-  <div class="taskContainer">
-    @if(!isShowComponent) {
-    <span>{{ card.taskName }}</span>
-
-    <button class="buttonMore" (click)="isActiveMore(index)">
-      <mat-icon> more_vert </mat-icon>
-    </button>
-    } @else {
-    <input type="text" autofocus [(ngModel)]="card.taskName" />
-    <button (click)="editCardName()">save</button>
+  <div class="notesContainer">
+    @if(isActiveMoreList === index || isActiveMoreList) {
+    <app-more-list
+      [data]="card"
+      (showEditComponent)="showComponent($event, 'edit')"
+      (showColorComponent)="showComponent($event)"
+      (showDeleteComponent)="showComponent($event)"
+      [showDeleteButton]="cards.length > 1"
+    />
+    } @if(isColor) {
+    <app-color-picker (colorSelected)="changeColor($event)" />
     }
-  </div>
-  <button class="addButton" (click)="emitAddNoteClicked(); value = true">
-    +
-  </button>
-  @if(value) {
-  <app-textarea
-    [isNoteActive]="value"
-    (isNoteChanges)="isNoteChanges($event)"
-    (saveNoteClicked)="handleSaved($event, card.id)"
-  />
-  }
-  <ul
-    class="list"
-    [ngClass]="{
-      list: layout === 'flex',
-      listBlock: layout === 'block'
-    }"
-  >
-    @for (note of card.notes ; track $index) {
-    <app-notes
-      [layout]="layout"
-      [note]="note"
-      [card]="card"
-      [isActive]="isActive"
-      [index]="$index"
+    <div class="taskContainer">
+      @if(!isShowComponent) {
+      <span>{{ card.taskName }}</span>
+      <button class="buttonMore" (click)="isActiveMore(index)">
+        <mat-icon> more_vert </mat-icon>
+      </button>
+      } @else {
+      <div class="editContainer">
+        <input
+          type="text"
+          autofocus
+          [(ngModel)]="card.taskName"
+          class="inputEdit"
+        />
+        <div class="editButtonContainer">
+          <button (click)="(isShowComponent = false)">X</button>
+          <button (click)="editCardName()">save</button>
+        </div>
+      </div>
+      }
+    </div>
+    <button class="addButton" (click)="emitAddNoteClicked(); value = true">
+      +
+    </button>
+    @if(value) {
+    <app-textarea
+      [isNoteActive]="value"
+      (isNoteChanges)="isNoteChanges($event)"
+      (saveNoteClicked)="handleSaved($event, card.id)"
     />
     }
-  </ul>
+    <ul
+      class="list"
+      [ngClass]="{
+        list: layout === 'flex',
+        listBlock: layout === 'block'
+      }"
+    >
+      @for (note of card.notes ; track $index) {
+      <app-notes
+        [layout]="layout"
+        [note]="note"
+        [card]="card"
+        [isActive]="isActive"
+        [index]="$index"
+      />
+      }
+    </ul>
+  </div>
 </div>

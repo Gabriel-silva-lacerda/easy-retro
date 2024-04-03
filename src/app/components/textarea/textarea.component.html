@@ -1,6 +1,11 @@
 <div class="notes" [ngStyle]="{ marginBottom: isNoteActive ? '0.8rem' : '0' }">
   <div>
-    <textarea cols="30" rows="10" [(ngModel)]="noteContent"></textarea>
+    <textarea
+      cols="30"
+      rows="10"
+      [(ngModel)]="noteContent"
+      (keydown.enter)="saveNote()"
+    ></textarea>
   </div>
   <div>
     <button class="close" (click)="closeNote()">X</button>

@@ -3,9 +3,9 @@
 
 :host {
   width: 100%;
-  margin-right: 1rem !important;
   @include maxWidth();
   padding: 0 0 !important;
+
   .notesName {
     display: flex;
     flex-direction: column;
@@ -13,81 +13,101 @@
     min-width: 212px;
     position: relative;
 
-    .color {
-      position: absolute;
-      background: $white;
-      right: 0;
-      top: 0;
-
-      z-index: 100;
-      max-width: 150px;
-      width: 100%;
-      padding: 0.7rem;
-      border-radius: 3px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.2rem;
-      li {
-        cursor: pointer;
-        width: 20px;
-        height: 20px;
-        background: red;
-      }
-    }
-    .taskContainer {
-      @include flexBox(space-between, 0.6rem);
-      text-transform: capitalize;
-
-      span {
-        font-size: 1rem;
-        font-weight: 500;
-        color: $black;
-        display: block;
-
-        @media (max-width: 576px) {
-          border-bottom: 2px solid $primary-color;
-        }
-      }
-
-      .buttonMore {
-        background: none;
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        mat-icon {
-          font-size: 1.1rem;
-          height: 15px;
-        }
-      }
-    }
-
-    .addButton {
-      display: block;
-      width: 100%;
-      padding: 4px 8px;
-      margin: 0 0 10px;
-      font-weight: bold;
-      color: #8c8c9e;
-      font-size: 18px;
-      background: rgba(94, 94, 113, 0.08);
-      border: 0;
-      cursor: pointer;
-      margin-top: 1rem;
-    }
-
-    .list {
-      width: 100%;
-      // display: flex;
-    }
-
-    .listBlock {
-      display: flex;
+    .notesContainer {
+      margin-right: 1rem;
 
       @media (max-width: 576px) {
+        margin-right: 0rem;
+      }
+
+      .taskContainer {
+        @include flexBox(space-between, 0.6rem);
+        text-transform: capitalize;
+
+        span {
+          font-size: 1rem;
+          font-weight: 500;
+          color: $black;
+          display: block;
+
+          @media (max-width: 576px) {
+            border-bottom: 2px solid $primary-color;
+          }
+        }
+
+        .buttonMore {
+          background: none;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          mat-icon {
+            font-size: 1.1rem;
+            height: 15px;
+          }
+        }
+
+        .editContainer {
+          width: 100%;
+          border: 1px solid $input-color;
+          padding: 0.3rem;
+
+          display: flex;
+          justify-content: space-between;
+          .inputEdit {
+            background: none;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            width: 100%;
+          }
+
+          .editButtonContainer {
+            display: flex;
+            gap: 0.4rem;
+            width: 130px;
+            button {
+              width: 130px;
+              background-color: $primary-color;
+              cursor: pointer;
+              color: #fff;
+              border-radius: 2px;
+              width: 100%;
+              max-width: 120px;
+              border: none;
+              padding: 0.3rem;
+              text-transform: capitalize;
+            }
+          }
+        }
+      }
+
+      .addButton {
         display: block;
+        width: 100%;
+        padding: 4px 8px;
+        margin: 0 0 10px;
+        font-weight: bold;
+        color: #8c8c9e;
+        font-size: 18px;
+        background: rgba(94, 94, 113, 0.08);
+        border: 0;
+        cursor: pointer;
+        margin-top: 1rem;
+      }
+
+      .list {
+        width: 100%;
+      }
+
+      .listBlock {
+        display: flex;
+
+        @media (max-width: 576px) {
+          display: block;
+        }
       }
     }
   }

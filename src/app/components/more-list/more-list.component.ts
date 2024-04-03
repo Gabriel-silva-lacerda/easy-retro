@@ -1,3 +1,4 @@
+import { DashboardService } from './../../service/dashboard.service';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Notes, Card } from '../../interfaces/dashBoard.interface';
@@ -11,7 +12,7 @@ import { DashFunctionsService } from '../../service/dash-functions.service';
   styleUrl: './more-list.component.scss',
 })
 export class MoreListComponent {
-  @Input() data!: Card | Notes | any;
+  @Input() data!: Notes | Card | any;
   @Output() showColorComponent = new EventEmitter();
   @Output() showEditComponent = new EventEmitter();
   @Output() showDeleteComponent = new EventEmitter();
@@ -20,7 +21,12 @@ export class MoreListComponent {
   isColorActive = false;
   isDeleteActive = false;
 
-  constructor(private dashFunctionsService: DashFunctionsService) {}
+  @Input() showDeleteButton!: boolean;
+
+  constructor(
+    private dashFunctionsService: DashFunctionsService,
+    private dashboardService: DashboardService
+  ) {}
 
   editData() {
     this.isEditActive = true;

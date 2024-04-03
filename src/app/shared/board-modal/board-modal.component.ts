@@ -93,7 +93,7 @@ export class BoardModalComponent implements OnInit {
                 '/publicboard',
                 modalPublicBoardValue.boardId,
               ]);
-            }, 3000);
+            }, 2000);
           },
           error: (error) => {
             console.error(error);

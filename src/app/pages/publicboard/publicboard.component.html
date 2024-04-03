@@ -4,7 +4,7 @@
       <button (mouseover)="showData = true" (mouseout)="showData = false">
         <mat-icon> visibility </mat-icon>
         <div class="visibilityContainer" [class.show]="showData">
-          <span class="lengthCards">{{ cards?.length }}</span>
+          <span class="lengthCards">{{ cards.length }}</span>
           <span class="lengthName">Cards</span>
         </div>
       </button>
@@ -32,6 +32,7 @@
     >
       @for (card of cards; track $index) {
       <app-card
+        [cards]="cards"
         [card]="card"
         [index]="$index"
         [valueFilterNotes]="valueFilterNotes"

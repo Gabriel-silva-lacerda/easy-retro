@@ -2,11 +2,10 @@
 @import "../../../styles/mixin.scss";
 
 header {
-  @include maxWidth();
   box-shadow: 0 1px 1px #0000001a;
-
   div {
-    padding: 1rem 0;
+    @include maxWidth();
+    padding: 1rem 1.3rem;
     @include flexBox(space-between, 0);
     gap: 0.3rem;
     flex-wrap: wrap;

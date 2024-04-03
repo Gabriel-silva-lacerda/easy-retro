@@ -49,11 +49,13 @@ export class TextareaComponent {
     this.saveNoteClicked.emit(this.noteContent);
 
     if (this.moreList) {
-      this.note.content = this.noteContent;
+      if (this.noteContent.trim() !== '') {
+        this.note.content = this.noteContent;
 
-      this.dashboardService.updateCard(this.card).subscribe({
-        error: (error) => console.error(error),
-      });
+        this.dashboardService.updateCard(this.card).subscribe({
+          error: (error) => console.error(error),
+        });
+      }
     }
   }
 

@@ -12,6 +12,7 @@
     (showEditComponent)="isActiveComponent($event)"
     (showColorComponent)="isColorActive($event)"
     (showDeleteComponent)="isActiveComponent($event)"
+    [showDeleteButton]="true"
   />
   } @if(isColor) {
   <app-color-picker (colorSelected)="changeColor($event)" />

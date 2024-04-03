@@ -38,6 +38,7 @@ import { ColorPickerComponent } from '../color-picker/color-picker.component';
 export class CardComponent implements OnChanges {
   @ViewChild(TextareaComponent)
   publicBoardNotesComponent!: TextareaComponent;
+  @Input() cards: Card[] = [];
   @Input() card!: Card;
   @Input() valueFilterNotes!: string;
   @Input() index!: number;
@@ -45,7 +46,7 @@ export class CardComponent implements OnChanges {
 
   value = false;
   isActive: number | null | boolean = null;
-  isActiveMoreList: number | null | boolean = null;
+  isActiveMoreList!: number | null | boolean;
   isShowComponent = false;
   isColor = false;
   originalNotes: Notes[] = [];
@@ -55,7 +56,7 @@ export class CardComponent implements OnChanges {
     private dashFunctionsService: DashFunctionsService
   ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges) {
     if (changes['card'] && changes['card'].currentValue)
       this.originalNotes = [...this.card.notes];
 
@@ -85,18 +86,20 @@ export class CardComponent implements OnChanges {
   }
 
   handleSaved(value: string, cardId: string | undefined) {
-    const newNote = {
-      id: this.generateNumericId(4),
-      content: value,
-      cardId,
-      likes: 0,
-      background: '',
-    };
+    if (value.trim() !== '') {
+      const newNote = {
+        id: this.generateNumericId(4),
+        content: value,
+        cardId,
+        likes: 0,
+        background: '',
+      };
 
-    this.card.notes.push(newNote);
-    this.dashboardService.updateCard(this.card).subscribe({
-      error: (error) => console.error(error),
-    });
+      this.card.notes.push(newNote);
+      this.dashboardService.updateCard(this.card).subscribe({
+        error: (error) => console.error(error),
+      });
+    }
   }
 
   showComponent(boll: boolean, status?: string) {

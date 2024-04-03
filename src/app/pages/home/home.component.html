@@ -14,13 +14,13 @@
           <span>Sort date</span>
           <div class="containerSortDate">
             <button
-              (click)="sortCardDash('asc')"
+              (click)="sortBoardDash('asc')"
               [ngClass]="selectedButton === 'asc' ? 'ascButton' : ''"
             >
               <mat-icon>keyboard_arrow_down </mat-icon>
             </button>
             <button
-              (click)="sortCardDash('desc')"
+              (click)="sortBoardDash('desc')"
               [ngClass]="selectedButton === 'desc' ? 'descButton' : ''"
             >
               <mat-icon>expand_less </mat-icon>

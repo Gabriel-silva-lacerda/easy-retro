@@ -11,10 +11,13 @@
     </button>
     <span>Set card color</span>
   </li>
+
+  @if(showDeleteButton) {
   <li (click)="deleteData(data.id, data.cardId)">
     <button>
       <mat-icon> delete </mat-icon>
     </button>
     <span>Delete card</span>
   </li>
+  }
 </ul>
