@@ -1,17 +1,17 @@
 <ul class="moreList">
-  <li (click)="editNote()">
+  <li (click)="editData()">
     <button>
       <mat-icon>edit</mat-icon>
     </button>
     <span>Edit card</span>
   </li>
-  <li class="colorNote" (click)="colorNote()">
+  <li class="colorNote" (click)="colorPick()">
     <button>
       <mat-icon>format_color_fill</mat-icon>
     </button>
     <span>Set card color</span>
   </li>
-  <li (click)="deleteNote(data.id)">
+  <li (click)="deleteData(data.id, data.cardId)">
     <button>
       <mat-icon> delete </mat-icon>
     </button>

@@ -9,13 +9,13 @@
   @if(isActive === index || isActive ) {
   <app-more-list
     [data]="note"
-    (isActiveEdit)="isActiveComponent($event)"
-    (isColor)="isColorActive($event)"
+    (showEditComponent)="isActiveComponent($event)"
+    (showColorComponent)="isColorActive($event)"
+    (showDeleteComponent)="isActiveComponent($event)"
   />
   } @if(isColor) {
   <app-color-picker (colorSelected)="changeColor($event)" />
   }
-
   <div class="contentContainer">
     <span>{{ note.content }}</span>
     <button class="buttonMore" (click)="isActiveMore(index)">
@@ -41,6 +41,7 @@
 </li>
 } @if (isComponent) {
 <app-textarea
+  [card]="card"
   [note]="note"
   [noteContent]="note.content"
   [moreList]="isComponent"

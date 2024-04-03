@@ -69,6 +69,7 @@ export class BoardModalComponent implements OnInit {
         taskName: this.dashForm.value.taskName,
         date: new Date(),
         boardId: '',
+        notes: [],
       };
 
       this.dashboardService

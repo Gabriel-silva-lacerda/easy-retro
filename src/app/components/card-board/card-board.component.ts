@@ -20,8 +20,8 @@ export class CardBoardComponent {
     private router: Router
   ) {}
 
-  deleteCard = (id: string | undefined) =>
-    this.dashFunctionsService.deleteCard(id);
+  deleteBoard = (id: string | undefined) =>
+    this.dashFunctionsService.deleteBoard(id);
 
   redirectToCard(cardId: string | undefined): void {
     this.router.navigate(['/publicboard', cardId]);

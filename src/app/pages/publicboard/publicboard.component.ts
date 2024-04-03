@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CardComponent } from '../../components/card/card.component';
 import { TextareaComponent } from '../../components/textarea/textarea.component';
 import { DashboardService } from '../../service/dashboard.service';
-import { PublicBoard } from '../../interfaces/dashBoard.interface';
+import { Notes, PublicBoard } from '../../interfaces/dashBoard.interface';
 import { ActivatedRoute } from '@angular/router';
 import { PublicBoardModalComponent } from '../../shared/public-board-modal/public-board-modal.component';
 import { IdService } from '../../service/id.service';
@@ -27,10 +27,11 @@ import { NgClass } from '@angular/common';
   styleUrl: './publicboard.component.scss',
 })
 export class PublicboardComponent implements OnInit {
-  dataCardName!: PublicBoard[];
+  cards!: PublicBoard[];
+  filterNotes!: PublicBoard[];
   addNoteClicked!: boolean;
   notesId!: string | undefined;
-  filterNotes!: string;
+  valueFilterNotes!: string;
   showData: boolean = false;
   displayType: 'flex' | 'block' = 'flex';
 
@@ -50,7 +51,8 @@ export class PublicboardComponent implements OnInit {
         next: (data) => {
           const filteredData = data.filter((board) => board.boardId === id);
           this.dashboardService.dataPublicboard.set(filteredData);
-          this.dataCardName = filteredData;
+          this.dashboardService.searchNotes.set(filteredData);
+          this.cards = filteredData;
         },
         error: (error) => {
           console.error(error);
@@ -58,16 +60,14 @@ export class PublicboardComponent implements OnInit {
       });
     }
 
-    this.dashFunctionsService.deletePublic.subscribe((idPublicBoard) => {
-      this.dataCardName = this.dataCardName.filter(
-        (data) => data.id !== idPublicBoard
-      );
+    this.dashFunctionsService.deleteCardEmit.subscribe((idPublicBoard) => {
+      this.cards = this.cards.filter((data) => data.id !== idPublicBoard);
     });
   }
 
   toggleDisplay = (type: 'flex' | 'block') => (this.displayType = type);
-  
-  searchData = (value: string) => (this.filterNotes = value);
+
+  searchData = (value: string) => (this.valueFilterNotes = value);
 
   addNotesId = (id: string) => (this.notesId = id);
 

@@ -85,6 +85,10 @@
 
     .listBlock {
       display: flex;
+
+      @media (max-width: 576px) {
+        display: block;
+      }
     }
   }
 }

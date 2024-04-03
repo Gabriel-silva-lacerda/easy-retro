@@ -16,9 +16,8 @@ export class DashboardService {
 
   dataDash: WritableSignal<DashBoard[]> = signal([]);
   searchDash: WritableSignal<DashBoard[]> = signal([]);
-  searchPublicboard: WritableSignal<any> = signal([]);
+  searchNotes: WritableSignal<PublicBoard[]> = signal([]);
   dataPublicboard: WritableSignal<PublicBoard[]> = signal([]);
-  dataNotes: WritableSignal<Notes[]> = signal([]);
 
   constructor(private http: HttpClient) {}
 
@@ -35,23 +34,6 @@ export class DashboardService {
     return this.http.get<PublicBoard[]>(`${this.apiUrl}/cards`).pipe(
       tap((data) => {
         this.dataPublicboard.set(data);
-      })
-    );
-  }
-
-  getNotes(obj?: any): Observable<Notes[]> {
-    let params = new HttpParams();
-
-    if (obj) {
-      Object.entries(obj).forEach(
-        ([key, value]) =>
-          (params = value ? params.set(key, value.toString()) : params)
-      );
-    }
-
-    return this.http.get<Notes[]>(`${this.apiUrl}/notes`, { params }).pipe(
-      tap((data) => {
-        this.dataNotes.set(data);
       })
     );
   }
@@ -76,29 +58,32 @@ export class DashboardService {
     );
   }
 
-  postNotes(data: Notes): Observable<Notes> {
-    return this.http.post<Notes>(`${this.apiUrl}/notes`, data);
-  }
-
   deleteDataDashboard(id: string | undefined): Observable<DashBoard> {
     return this.http.delete<DashBoard>(`${this.apiUrl}/boards/${id}`);
-  }
-
-  deleteNotes(id: string | undefined): Observable<Notes> {
-    console.log(id);
-
-    return this.http.delete<Notes>(`${this.apiUrl}/notes/${id}`);
   }
 
   deletePublicBoard(id: string | undefined): Observable<Notes> {
     return this.http.delete<Notes>(`${this.apiUrl}/cards/${id}`);
   }
 
-  updateNote(note: Notes): Observable<Notes> {
-    return this.http.put<Notes>(`${this.apiUrl}/notes/${note.id}`, note);
-  }
-
   updatePublicBoard(note: any): Observable<Notes> {
     return this.http.put<Notes>(`${this.apiUrl}/cards/${note.id}`, note);
   }
 }
+
+// getNotes(obj?: any): Observable<Notes[]> {
+//   let params = new HttpParams();
+
+//   if (obj) {
+//     Object.entries(obj).forEach(
+//       ([key, value]) =>
+//         (params = value ? params.set(key, value.toString()) : params)
+//     );
+//   }
+
+//   return this.http.get<Notes[]>(`${this.apiUrl}/notes`, { params }).pipe(
+//     tap((data) => {
+//       this.dataNotes.set(data);
+//     })
+//   );
+// }

@@ -3,12 +3,21 @@
 :host {
   flex: 1;
 
+  &:last-child {
+    .noteLi {
+      margin-right: 0 !important;
+    }
+  }
+
   .noteLi {
     background: $primary-color;
     margin-bottom: 0.8rem;
     padding: 0.6rem;
     position: relative;
 
+    @media (max-width: 576px) {
+      margin-right: 0 !important;
+    }
     .contentContainer {
       display: flex;
       justify-content: space-between;

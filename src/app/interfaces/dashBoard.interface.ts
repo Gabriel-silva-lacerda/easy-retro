@@ -7,6 +7,7 @@ export interface DashBoard {
 export interface PublicBoard extends Omit<DashBoard, 'projectName'> {
   taskName?: string;
   boardId: string | undefined;
+  notes: Notes[];
 }
 
 export interface Notes {
@@ -14,6 +15,5 @@ export interface Notes {
   content: string;
   cardId?: string | undefined;
   likes: number;
-  isActive?: boolean;
   background: string;
 }

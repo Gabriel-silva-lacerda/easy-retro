@@ -53,6 +53,7 @@ export class PublicBoardModalComponent implements OnInit {
         taskName: this.publicBoard.value.taskName,
         date: new Date(),
         boardId: this.id,
+        notes: [],
       };
 
       this.dashBoardService.postDataPublicboard(modalValue).subscribe({

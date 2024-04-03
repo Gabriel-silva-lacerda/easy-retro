@@ -4,7 +4,7 @@
       <button (mouseover)="showData = true" (mouseout)="showData = false">
         <mat-icon> visibility </mat-icon>
         <div class="visibilityContainer" [class.show]="showData">
-          <span class="lengthCards">{{ dataCardName.length }}</span>
+          <span class="lengthCards">{{ cards.length }}</span>
           <span class="lengthName">Cards</span>
         </div>
       </button>
@@ -30,11 +30,11 @@
         'boardList-block': displayType === 'block'
       }"
     >
-      @for (cardName of dataCardName; track $index) {
+      @for (card of cards; track $index) {
       <app-card
-        [cardName]="cardName"
+        [card]="card"
         [index]="$index"
-        [valueFilterNotes]="filterNotes"
+        [valueFilterNotes]="valueFilterNotes"
         [layout]="displayType"
       />
       }

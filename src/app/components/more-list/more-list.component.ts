@@ -11,28 +11,31 @@ import { DashFunctionsService } from '../../service/dash-functions.service';
   styleUrl: './more-list.component.scss',
 })
 export class MoreListComponent {
-  @Input() data!: PublicBoard | Notes;
-  @Input() isColorActive = false;
-  @Input() desactiveMoreList = false;
-  @Output() isColor = new EventEmitter();
-  @Output() isActiveEdit = new EventEmitter();
+  @Input() data!: PublicBoard | Notes | any;
+  @Output() showColorComponent = new EventEmitter();
+  @Output() showEditComponent = new EventEmitter();
+  @Output() showDeleteComponent = new EventEmitter();
 
-  isActiveComponent = false;
+  isEditActive = false;
+  isColorActive = false;
+  isDeleteActive = false;
 
   constructor(private dashFunctionsService: DashFunctionsService) {}
 
-  editNote() {
-    this.isActiveComponent = true;
-    this.isActiveEdit.emit(this.isActiveComponent);
+  editData() {
+    this.isEditActive = true;
+    this.showEditComponent.emit(this.isEditActive);
   }
 
-  deleteNote = (id: string | undefined) => {
-    // this.dashFunctionsService.deleteNotes(id);
-    this.dashFunctionsService.deletePublicBoard2(id);
+  deleteData = (id: string | undefined, cardId?: string) => {
+    if (id && cardId) this.dashFunctionsService.deleteNote(id, cardId);
+    else this.dashFunctionsService.deleteCard(id);
+
+    this.showDeleteComponent.emit(this.isDeleteActive);
   };
 
-  colorNote() {
+  colorPick() {
     this.isColorActive = true;
-    this.isColor.emit(this.isColorActive);
+    this.showColorComponent.emit(this.isColorActive);
   }
 }

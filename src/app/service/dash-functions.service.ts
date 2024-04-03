@@ -1,36 +1,27 @@
-import {
-  ChangeDetectorRef,
-  Injectable,
-  OnInit,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { DashboardService } from './dashboard.service';
-import { DashBoard, Notes } from '../interfaces/dashBoard.interface';
-import { forkJoin, switchMap } from 'rxjs';
+import { DashBoard, PublicBoard } from '../interfaces/dashBoard.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DashFunctionsService {
-  @Output() deleteNote = new EventEmitter();
-  @Output() deletePublic = new EventEmitter();
+  @Output() deleteCardEmit = new EventEmitter();
 
   constructor(private dashboardService: DashboardService) {}
 
   increaseOrDecreaseLike(
-    notes: Notes[],
+    card: PublicBoard,
     noteId: string | undefined,
     increase: boolean
   ): void {
-    const noteIndex = notes.findIndex((note) => note.id === noteId);
-    if (noteIndex !== -1) {
-      increase ? notes[noteIndex].likes++ : notes[noteIndex].likes--;
+    const note = card.notes.find((note) => note.id === noteId);
 
-      this.dashboardService.updateNote(notes[noteIndex]).subscribe({
-        error: (error) => {
-          console.error('Erro ao atualizar likes:', error);
-        },
+    if (note) {
+      increase ? note.likes++ : note.likes--;
+
+      this.dashboardService.updatePublicBoard(card).subscribe({
+        error: (error) => console.error(error),
       });
     }
   }
@@ -48,99 +39,39 @@ export class DashFunctionsService {
     });
   }
 
-  deleteCard(id: string | undefined) {
+  deleteBoard(id: string | undefined) {
     this.dashboardService.deleteDataDashboard(id).subscribe(() => {
-      const cards = this.dashboardService.dataDash();
+      const boards = this.dashboardService.dataDash();
 
-      const index = cards.findIndex((card) => card.id === id);
+      const index = boards.findIndex((card) => card.id === id);
       const isIndexValid = index !== -1;
 
       if (isIndexValid) {
-        cards.splice(index, 1);
-        this.dashboardService.dataDash.set(cards);
+        boards.splice(index, 1);
+        this.dashboardService.dataDash.set(boards);
       }
     });
   }
 
-  deleteNotes(id: string | undefined) {
-    this.dashboardService.deleteNotes(id).subscribe({
-      next: () => {
-        this.deleteNote.emit(id);
-      },
-      error: (error) => {
-        console.error('Erro ao excluir a nota:', error);
-      },
+  deleteNote(id: string | undefined, cardId: string | undefined) {
+    const cards = this.dashboardService.dataPublicboard();
+    const card = cards.find((card) => card.id === cardId);
+    if (card) {
+      const index = card?.notes.findIndex((card) => card.id === id);
+      const isIndexValid = index !== -1;
+      if (isIndexValid) card?.notes?.splice(index, 1);
+    }
+
+    this.dashboardService.updatePublicBoard(card).subscribe({
+      error: (error) => console.error(error),
     });
   }
 
-  deletePublicBoard(id: string | undefined) {
+  deleteCard(id: string | undefined) {
     this.dashboardService.deletePublicBoard(id).subscribe({
-      next: () => {
-        this.deletePublic.emit(id);
-      },
-      error: (error) => {
-        console.error('Erro ao excluir a board:', error);
-      },
+      next: () => this.deleteCardEmit.emit(id),
+      error: (error) => console.error(error),
     });
-  }
-
-  deletePublicBoard3(id: string | undefined) {
-    const obj = {
-      cardId: id,
-    };
-
-    this.dashboardService
-      .deletePublicBoard(id)
-      .pipe(
-        switchMap(() => {
-          this.deletePublic.emit(id);
-          return this.dashboardService.getNotes(obj);
-        })
-      )
-      .pipe(
-        switchMap((notes) => {
-          this.deleteNote.emit(id);
-          const deleteNoteRequests = notes.map((note) =>
-            this.dashboardService.deleteNotes(note.id)
-          );
-          return forkJoin(deleteNoteRequests);
-        })
-      )
-      .subscribe({
-        next: () => {
-          //
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
-  }
-
-  deletePublicBoard2(id: string | undefined) {
-    const obj = {
-      cardId: id,
-    };
-
-    this.dashboardService
-      .getNotes(obj)
-      .pipe(
-        switchMap((notes) => {
-          const deleteNoteRequests = notes.map((note) => {
-            this.deleteNote.emit(note.id);
-            return this.dashboardService.deleteNotes(note.id);
-          });
-          return forkJoin(deleteNoteRequests);
-        })
-      )
-      .pipe(switchMap(() => this.dashboardService.deletePublicBoard(id)))
-      .subscribe({
-        next: () => {
-          this.deletePublic.emit(id);
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
   }
 
   filterData = (data: any[], value: string, propertyName: string) =>

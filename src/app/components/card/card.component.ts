@@ -1,10 +1,8 @@
 import {
   Component,
-  EventEmitter,
   Input,
   OnChanges,
   OnInit,
-  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -17,9 +15,8 @@ import { MoreListComponent } from '../more-list/more-list.component';
 import { JsonPipe, NgClass, NgStyle } from '@angular/common';
 import { NotesComponent } from '../notes/notes.component';
 import { FormsModule } from '@angular/forms';
-import { Observable, forkJoin } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { ColorPickerComponent } from '../color-picker/color-picker.component';
-
 
 @Component({
   selector: 'app-card',
@@ -39,69 +36,67 @@ import { ColorPickerComponent } from '../color-picker/color-picker.component';
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
 })
-export class CardComponent implements OnInit, OnChanges {
+export class CardComponent implements OnChanges {
   @ViewChild(TextareaComponent)
   publicBoardNotesComponent!: TextareaComponent;
-  @Input() cardName!: PublicBoard;
-  @Input() index!: number;
+  @Input() card!: PublicBoard;
   @Input() valueFilterNotes!: string;
-  @Input() layout: any;
+  @Input() index!: number;
+  @Input() layout!: 'flex' | 'block';
 
   value = false;
   isActive: number | null | boolean = null;
   isActiveMoreList: number | null | boolean = null;
   isShowComponent = false;
   isColor = false;
-
-  notes: Notes[] = [];
-  filterNotes: Notes[] = [];
+  originalNotes: Notes[] = [];
 
   constructor(
     private dashboardService: DashboardService,
     private dashFunctionsService: DashFunctionsService
   ) {}
 
-  ngOnInit(): void {
-    const obj = {
-      cardId: this.cardName.id,
-    };
-
-    this.dashFunctionsService.deleteNote.subscribe((deletedNoteId) => {
-      this.notes = this.notes.filter((note) => note.id !== deletedNoteId);
-      // if (deletedNoteId) {
-      //   this.dashboardService.getNotes(obj).subscribe((data) => {
-      //     console.log(data);
-
-      //     this.notes = data;
-      //   });
-      // }
-    });
-
-    this.dashboardService.getNotes(obj).subscribe((data) => {
-      this.notes = data;
-      this.filterNotes = data;
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['valueFilterNotes'])
-      this.notes = this.dashFunctionsService.filterData(
-        this.filterNotes,
+    if (changes['card'] && changes['card'].currentValue)
+      this.originalNotes = [...this.card.notes];
+
+    const card = this.dashboardService
+      .searchNotes()
+      .find((c) => c.id === this.card.id);
+
+    if (
+      changes['valueFilterNotes'] &&
+      changes['valueFilterNotes'].currentValue
+    ) {
+      this.card.notes = this.dashFunctionsService.filterData(
+        card?.notes || [],
         this.valueFilterNotes,
         'content'
       );
+    } else this.card.notes = [...this.originalNotes];
   }
 
-  handleSaved(value: string, id: string | undefined) {
-    const newNote = { content: value, cardId: id, likes: 0, background: '' };
-    this.dashboardService.postNotes(newNote).subscribe({
-      next: (response) => {
-        this.notes.push(response);
-        this.filterNotes = this.notes;
-      },
-      error: (error) => {
-        console.error('Erro ao adicionar nota:', error);
-      },
+  generateNumericId(length: number) {
+    let id = '';
+    for (let i = 0; i < length; i++) {
+      id += Math.floor(Math.random() * 10);
+    }
+
+    return id;
+  }
+
+  handleSaved(value: string, cardId: string | undefined) {
+    const newNote = {
+      id: this.generateNumericId(4),
+      content: value,
+      cardId,
+      likes: 0,
+      background: '',
+    };
+
+    this.card.notes.push(newNote);
+    this.dashboardService.updatePublicBoard(this.card).subscribe({
+      error: (error) => console.error(error),
     });
   }
 
@@ -110,30 +105,26 @@ export class CardComponent implements OnInit, OnChanges {
     this.isActiveMoreList = false;
   }
 
-  editBoardName() {
+  editCardName() {
     this.isShowComponent = false;
-    this.dashboardService.updatePublicBoard(this.cardName).subscribe({
-      error: (error) => {
-        console.error(error);
-      },
+    this.dashboardService.updatePublicBoard(this.card).subscribe({
+      error: (error) => console.error(error),
     });
   }
 
   changeColor(background: string) {
     this.isColor = false;
 
-    console.log(this.layout);
-
-    const observables = this.notes.map((note) => {
-      const updatedNote = { ...note, background };
-      const observable = this.dashboardService.updateNote(updatedNote);
+    const observables = this.card.notes.map((note) => {
+      note.background = background;
+      const observable = this.dashboardService.updatePublicBoard(this.card);
 
       return observable;
     });
 
     forkJoin(observables).subscribe({
       next: () => {
-        this.notes.forEach((note) => {
+        this.card.notes.forEach((note) => {
           note.background = background;
         });
       },
@@ -145,12 +136,6 @@ export class CardComponent implements OnInit, OnChanges {
 
   isActiveMore = (index: number) =>
     (this.isActiveMoreList = this.isActiveMoreList === index ? null : index);
-
-  increaseLike = (noteId: string | undefined) =>
-    this.dashFunctionsService.increaseOrDecreaseLike(this.notes, noteId, true);
-
-  decreaseLike = (noteId: string | undefined) =>
-    this.dashFunctionsService.increaseOrDecreaseLike(this.notes, noteId, false);
 
   focusNoteTextarea = () => this.publicBoardNotesComponent.focusNoteTextarea();
 

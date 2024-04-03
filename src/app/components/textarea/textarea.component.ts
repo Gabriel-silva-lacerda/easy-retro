@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DashboardService } from '../../service/dashboard.service';
-import { Notes } from '../../interfaces/dashBoard.interface';
+import { Notes, PublicBoard } from '../../interfaces/dashBoard.interface';
 import { NgStyle } from '@angular/common';
 
 @Component({
@@ -22,8 +22,9 @@ import { NgStyle } from '@angular/common';
 export class TextareaComponent {
   @Input() moreList = false;
   @Input() isNoteActive!: boolean;
-  @Input() noteContent = '';
+  @Input() card!: PublicBoard;
   @Input() note!: Notes;
+  @Input() noteContent = '';
 
   @Output() notesChanges = new EventEmitter<string>();
   @Output() isNoteChanges = new EventEmitter<boolean>();
@@ -50,14 +51,10 @@ export class TextareaComponent {
     this.saveNoteClicked.emit(this.noteContent);
 
     if (this.moreList) {
-      console.log(this.moreList);
-
       this.note.content = this.noteContent;
 
-      this.dashboardService.updateNote(this.note).subscribe({
-        error: (error) => {
-          console.error('Erro ao atualizar likes:', error);
-        },
+      this.dashboardService.updatePublicBoard(this.card).subscribe({
+        error: (error) => console.error(error),
       });
     }
   }

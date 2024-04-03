@@ -1,9 +1,10 @@
 <div class="notesName">
   @if(isActiveMoreList === index || isActiveMoreList) {
   <app-more-list
-    [data]="cardName"
-    (isActiveEdit)="showComponent($event, 'edit')"
-    (isColor)="showComponent($event)"
+    [data]="card"
+    (showEditComponent)="showComponent($event, 'edit')"
+    (showColorComponent)="showComponent($event)"
+    (showDeleteComponent)="showComponent($event)"
   />
   } @if(isColor) {
   <app-color-picker (colorSelected)="changeColor($event)" />
@@ -11,14 +12,14 @@
 
   <div class="taskContainer">
     @if(!isShowComponent) {
-    <span>{{ cardName.taskName }}</span>
+    <span>{{ card.taskName }}</span>
 
     <button class="buttonMore" (click)="isActiveMore(index)">
       <mat-icon> more_vert </mat-icon>
     </button>
     } @else {
-    <input type="text" autofocus [(ngModel)]="cardName.taskName" />
-    <button (click)="editBoardName()">save</button>
+    <input type="text" autofocus [(ngModel)]="card.taskName" />
+    <button (click)="editCardName()">save</button>
     }
   </div>
   <button class="addButton" (click)="emitAddNoteClicked(); value = true">
@@ -28,7 +29,7 @@
   <app-textarea
     [isNoteActive]="value"
     (isNoteChanges)="isNoteChanges($event)"
-    (saveNoteClicked)="handleSaved($event, cardName.id)"
+    (saveNoteClicked)="handleSaved($event, card.id)"
   />
   }
   <ul
@@ -38,15 +39,14 @@
       listBlock: layout === 'block'
     }"
   >
-    @for (note of notes ; track $index) {
+    @for (note of card.notes ; track $index) {
     <app-notes
       [layout]="layout"
-      [notes]="notes"
       [note]="note"
+      [card]="card"
       [isActive]="isActive"
       [index]="$index"
     />
     }
   </ul>
-  <!-- {{ notes | json }}; -->
 </div>
