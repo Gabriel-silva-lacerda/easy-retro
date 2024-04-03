@@ -1,6 +1,6 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { DashboardService } from './dashboard.service';
-import { DashBoard, PublicBoard } from '../interfaces/dashBoard.interface';
+import { Board, Notes, Card } from '../interfaces/dashBoard.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ export class DashFunctionsService {
   constructor(private dashboardService: DashboardService) {}
 
   increaseOrDecreaseLike(
-    card: PublicBoard,
+    card: Card,
     noteId: string | undefined,
     increase: boolean
   ): void {
@@ -20,13 +20,13 @@ export class DashFunctionsService {
     if (note) {
       increase ? note.likes++ : note.likes--;
 
-      this.dashboardService.updatePublicBoard(card).subscribe({
+      this.dashboardService.updateCard(card).subscribe({
         error: (error) => console.error(error),
       });
     }
   }
 
-  sortCardDash(cardDash: DashBoard[], order: 'asc' | 'desc' = 'asc') {
+  sortCardDash(cardDash: Board[], order: 'asc' | 'desc' = 'asc') {
     return cardDash.sort((date01, date02) => {
       const dateA = new Date(date01.date);
       const dateB = new Date(date02.date);
@@ -40,21 +40,21 @@ export class DashFunctionsService {
   }
 
   deleteBoard(id: string | undefined) {
-    this.dashboardService.deleteDataDashboard(id).subscribe(() => {
-      const boards = this.dashboardService.dataDash();
+    this.dashboardService.deleteData<Board>(id, 'boards').subscribe(() => {
+      const boards = this.dashboardService.dataBoards();
 
       const index = boards.findIndex((card) => card.id === id);
       const isIndexValid = index !== -1;
 
       if (isIndexValid) {
         boards.splice(index, 1);
-        this.dashboardService.dataDash.set(boards);
+        this.dashboardService.dataBoards.set(boards);
       }
     });
   }
 
   deleteNote(id: string | undefined, cardId: string | undefined) {
-    const cards = this.dashboardService.dataPublicboard();
+    const cards = this.dashboardService.dataCards();
     const card = cards.find((card) => card.id === cardId);
     if (card) {
       const index = card?.notes.findIndex((card) => card.id === id);
@@ -62,13 +62,13 @@ export class DashFunctionsService {
       if (isIndexValid) card?.notes?.splice(index, 1);
     }
 
-    this.dashboardService.updatePublicBoard(card).subscribe({
+    this.dashboardService.updateCard(card).subscribe({
       error: (error) => console.error(error),
     });
   }
 
   deleteCard(id: string | undefined) {
-    this.dashboardService.deletePublicBoard(id).subscribe({
+    this.dashboardService.deleteData<Notes>(id, 'cards').subscribe({
       next: () => this.deleteCardEmit.emit(id),
       error: (error) => console.error(error),
     });

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { Notes, PublicBoard } from '../../interfaces/dashBoard.interface';
+import { Notes, Card } from '../../interfaces/dashBoard.interface';
 import { DashFunctionsService } from '../../service/dash-functions.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { DashFunctionsService } from '../../service/dash-functions.service';
   styleUrl: './more-list.component.scss',
 })
 export class MoreListComponent {
-  @Input() data!: PublicBoard | Notes | any;
+  @Input() data!: Card | Notes | any;
   @Output() showColorComponent = new EventEmitter();
   @Output() showEditComponent = new EventEmitter();
   @Output() showDeleteComponent = new EventEmitter();

@@ -1,7 +1,7 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { DashBoard } from '../../interfaces/dashBoard.interface';
+import { Board } from '../../interfaces/dashBoard.interface';
 import { DashFunctionsService } from '../../service/dash-functions.service';
 import { Router } from '@angular/router';
 
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrl: './card-board.component.scss',
 })
 export class CardBoardComponent {
-  @Input() cardContent!: DashBoard;
+  @Input() cardContent!: Board;
 
   constructor(
     private dashFunctionsService: DashFunctionsService,

@@ -73,11 +73,11 @@ export class BoardModalComponent implements OnInit {
       };
 
       this.dashboardService
-        .postDataDashboard(modalBoardValue)
+        .postDataBoards(modalBoardValue)
         .pipe(
-          switchMap((dataPublicboard) => {
-            modalPublicBoardValue.boardId = dataPublicboard.id as string;
-            return this.dashboardService.postDataPublicboard(
+          switchMap((dataCards) => {
+            modalPublicBoardValue.boardId = dataCards.id as string;
+            return this.dashboardService.postDataCards(
               modalPublicBoardValue
             );
           })

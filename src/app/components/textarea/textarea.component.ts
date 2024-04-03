@@ -3,13 +3,11 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnInit,
   Output,
-  ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DashboardService } from '../../service/dashboard.service';
-import { Notes, PublicBoard } from '../../interfaces/dashBoard.interface';
+import { Notes, Card } from '../../interfaces/dashBoard.interface';
 import { NgStyle } from '@angular/common';
 
 @Component({
@@ -22,7 +20,7 @@ import { NgStyle } from '@angular/common';
 export class TextareaComponent {
   @Input() moreList = false;
   @Input() isNoteActive!: boolean;
-  @Input() card!: PublicBoard;
+  @Input() card!: Card;
   @Input() note!: Notes;
   @Input() noteContent = '';
 
@@ -53,7 +51,7 @@ export class TextareaComponent {
     if (this.moreList) {
       this.note.content = this.noteContent;
 
-      this.dashboardService.updatePublicBoard(this.card).subscribe({
+      this.dashboardService.updateCard(this.card).subscribe({
         error: (error) => console.error(error),
       });
     }

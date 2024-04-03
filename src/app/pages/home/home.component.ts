@@ -7,7 +7,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { BoardModalComponent } from '../../shared/board-modal/board-modal.component';
 import { DashboardService } from '../../service/dashboard.service';
-import { DashBoard } from '../../interfaces/dashBoard.interface';
+import { Board } from '../../interfaces/dashBoard.interface';
 import { RouterOutlet } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -30,7 +30,7 @@ import { LoadingService } from '../../service/loading.service';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
-  cardDash: DashBoard[] = [];
+  cardDash: Board[] = [];
   selectedButton: 'asc' | 'desc' = 'asc';
   isLoading = false;
 
@@ -42,8 +42,8 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dashboardService.getDataDashboard().subscribe(() => {
-      this.cardDash = this.dashboardService.dataDash();
+    this.dashboardService.getDataBoards().subscribe(() => {
+      this.cardDash = this.dashboardService.dataBoards();
       this.sortCardDash(this.selectedButton);
     });
 
@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit {
 
   searchData = (value: string) =>
     (this.cardDash = this.dashFunctionsService.filterData(
-      this.dashboardService.searchDash(),
+      this.dashboardService.searchBoard(),
       value,
       'projectName'
     ));

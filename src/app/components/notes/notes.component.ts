@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DashFunctionsService } from '../../service/dash-functions.service';
 import { MoreListComponent } from '../more-list/more-list.component';
-import { Notes, PublicBoard } from '../../interfaces/dashBoard.interface';
+import { Notes, Card } from '../../interfaces/dashBoard.interface';
 import { MatIcon } from '@angular/material/icon';
 import { NgStyle } from '@angular/common';
 import { TextareaComponent } from '../textarea/textarea.component';
@@ -22,7 +22,7 @@ import { ColorPickerComponent } from '../color-picker/color-picker.component';
   styleUrl: './notes.component.scss',
 })
 export class NotesComponent {
-  @Input() card!: PublicBoard;
+  @Input() card!: Card;
   @Input() isActive!: number | null | boolean;
   @Input() note!: Notes;
   @Input() index!: number;
@@ -60,7 +60,7 @@ export class NotesComponent {
     this.isColor = false;
     this.note.background = color;
 
-    this.dashboardService.updatePublicBoard(this.card).subscribe({
+    this.dashboardService.updateCard(this.card).subscribe({
       error: (error) => {
         console.error(error);
       },

@@ -1,4 +1,3 @@
-import { RouterOutlet } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -56,7 +55,7 @@ export class PublicBoardModalComponent implements OnInit {
         notes: [],
       };
 
-      this.dashBoardService.postDataPublicboard(modalValue).subscribe({
+      this.dashBoardService.postDataCards(modalValue).subscribe({
         next: () => {
           this.closeModal();
         },

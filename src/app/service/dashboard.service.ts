@@ -1,11 +1,7 @@
 import { environment } from './../../environments/environment.development';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, WritableSignal, signal } from '@angular/core';
-import {
-  Notes,
-  DashBoard,
-  PublicBoard,
-} from '../interfaces/dashBoard.interface';
+import { Notes, Board, Card } from '../interfaces/dashBoard.interface';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({
@@ -14,62 +10,66 @@ import { Observable, tap } from 'rxjs';
 export class DashboardService {
   private apiUrl = environment.apiUrl;
 
-  dataDash: WritableSignal<DashBoard[]> = signal([]);
-  searchDash: WritableSignal<DashBoard[]> = signal([]);
-  searchNotes: WritableSignal<PublicBoard[]> = signal([]);
-  dataPublicboard: WritableSignal<PublicBoard[]> = signal([]);
+  dataBoards: WritableSignal<Board[]> = signal([]);
+  dataCards: WritableSignal<Card[]> = signal([]);
+  searchBoard: WritableSignal<Board[]> = signal([]);
+  searchNotes: WritableSignal<Card[]> = signal([]);
 
   constructor(private http: HttpClient) {}
 
-  getDataDashboard(): Observable<DashBoard[]> {
-    return this.http.get<DashBoard[]>(`${this.apiUrl}/boards`).pipe(
+  getDataBoards(): Observable<Board[]> {
+    return this.http.get<Board[]>(`${this.apiUrl}/boards`).pipe(
       tap((data) => {
-        this.dataDash.set(data);
-        this.searchDash.set(data);
+        this.dataBoards.set(data);
+        this.searchBoard.set(data);
       })
     );
   }
 
-  getDataPublicboard(): Observable<PublicBoard[]> {
-    return this.http.get<PublicBoard[]>(`${this.apiUrl}/cards`).pipe(
+  getDataCards(): Observable<Card[]> {
+    return this.http.get<Card[]>(`${this.apiUrl}/cards`).pipe(
       tap((data) => {
-        this.dataPublicboard.set(data);
+        this.dataCards.set(data);
       })
     );
   }
 
-  postDataDashboard(data: DashBoard): Observable<DashBoard> {
-    return this.http.post<DashBoard>(`${this.apiUrl}/boards`, data).pipe(
+  postDataBoards(data: Board): Observable<Board> {
+    return this.http.post<Board>(`${this.apiUrl}/boards`, data).pipe(
       tap((newData) => {
-        const currentData = this.dataDash();
+        const currentData = this.dataBoards();
         currentData.push(newData);
-        this.dataDash.set(currentData);
+        this.dataBoards.set(currentData);
       })
     );
   }
 
-  postDataPublicboard(data: PublicBoard): Observable<PublicBoard> {
-    return this.http.post<PublicBoard>(`${this.apiUrl}/cards`, data).pipe(
+  postDataCards(data: Card): Observable<Card> {
+    return this.http.post<Card>(`${this.apiUrl}/cards`, data).pipe(
       tap((newData) => {
-        const currentData = this.dataPublicboard();
+        const currentData = this.dataCards();
         currentData.push(newData);
-        this.dataPublicboard.set(currentData);
+        this.dataCards.set(currentData);
       })
     );
   }
 
-  deleteDataDashboard(id: string | undefined): Observable<DashBoard> {
-    return this.http.delete<DashBoard>(`${this.apiUrl}/boards/${id}`);
+  deleteData<T>(id: string | undefined, param: string): Observable<T> {
+    return this.http.delete<T>(`${this.apiUrl}/${param}/${id}`);
   }
 
-  deletePublicBoard(id: string | undefined): Observable<Notes> {
-    return this.http.delete<Notes>(`${this.apiUrl}/cards/${id}`);
-  }
-
-  updatePublicBoard(note: any): Observable<Notes> {
+  updateCard(note: any): Observable<Notes> {
     return this.http.put<Notes>(`${this.apiUrl}/cards/${note.id}`, note);
   }
 }
+
+// deleteBoard(id: string | undefined): Observable<DashBoard> {
+//   return this.http.delete<DashBoard>(`${this.apiUrl}/boards/${id}`);
+// }
+
+// deleteCard(id: string | undefined): Observable<Notes> {
+//   return this.http.delete<Notes>(`${this.apiUrl}/cards/${id}`);
+// }
 
 // getNotes(obj?: any): Observable<Notes[]> {
 //   let params = new HttpParams();

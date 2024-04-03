@@ -2,14 +2,13 @@ import {
   Component,
   Input,
   OnChanges,
-  OnInit,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TextareaComponent } from '../textarea/textarea.component';
 import { DashboardService } from '../../service/dashboard.service';
-import { Notes, PublicBoard } from '../../interfaces/dashBoard.interface';
+import { Notes, Card } from '../../interfaces/dashBoard.interface';
 import { DashFunctionsService } from '../../service/dash-functions.service';
 import { MoreListComponent } from '../more-list/more-list.component';
 import { JsonPipe, NgClass, NgStyle } from '@angular/common';
@@ -39,7 +38,7 @@ import { ColorPickerComponent } from '../color-picker/color-picker.component';
 export class CardComponent implements OnChanges {
   @ViewChild(TextareaComponent)
   publicBoardNotesComponent!: TextareaComponent;
-  @Input() card!: PublicBoard;
+  @Input() card!: Card;
   @Input() valueFilterNotes!: string;
   @Input() index!: number;
   @Input() layout!: 'flex' | 'block';
@@ -95,7 +94,7 @@ export class CardComponent implements OnChanges {
     };
 
     this.card.notes.push(newNote);
-    this.dashboardService.updatePublicBoard(this.card).subscribe({
+    this.dashboardService.updateCard(this.card).subscribe({
       error: (error) => console.error(error),
     });
   }
@@ -107,7 +106,7 @@ export class CardComponent implements OnChanges {
 
   editCardName() {
     this.isShowComponent = false;
-    this.dashboardService.updatePublicBoard(this.card).subscribe({
+    this.dashboardService.updateCard(this.card).subscribe({
       error: (error) => console.error(error),
     });
   }
@@ -117,7 +116,7 @@ export class CardComponent implements OnChanges {
 
     const observables = this.card.notes.map((note) => {
       note.background = background;
-      const observable = this.dashboardService.updatePublicBoard(this.card);
+      const observable = this.dashboardService.updateCard(this.card);
 
       return observable;
     });

@@ -1,10 +1,10 @@
-export interface DashBoard {
+export interface Board {
   id?: string;
   projectName: string;
   date: Date;
 }
 
-export interface PublicBoard extends Omit<DashBoard, 'projectName'> {
+export interface Card extends Omit<Board, 'projectName'> {
   taskName?: string;
   boardId: string | undefined;
   notes: Notes[];
