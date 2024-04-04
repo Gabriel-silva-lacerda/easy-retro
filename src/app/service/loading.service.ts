@@ -12,6 +12,7 @@ export class LoadingService {
   setLoadingState(isLoading: boolean) {
     this.isLoadingSubject.next(isLoading);
   }
+  
   setLoadingForId(id: string, isLoading: boolean): void {
     if (!this.isLoadingSubjectMap[id]) {
       this.isLoadingSubjectMap[id] = new BehaviorSubject<boolean>(false);

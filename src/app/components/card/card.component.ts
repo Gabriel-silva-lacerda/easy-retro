@@ -36,7 +36,7 @@ import { ColorPickerComponent } from '../color-picker/color-picker.component';
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
 })
-export class CardComponent implements OnChanges, OnInit {
+export class CardComponent implements OnChanges {
   @ViewChild(TextareaComponent)
   publicBoardNotesComponent!: TextareaComponent;
   @Input() cards: Card[] = [];
@@ -50,36 +50,26 @@ export class CardComponent implements OnChanges, OnInit {
   isActiveMoreList!: number | null | boolean;
   isShowComponent = false;
   isColor = false;
-  @Input() filterNotes: Card[] = [];
 
-  constructor(private dashboardService: DashboardService) {}
-
-  ngOnInit(): void {
-    // console.log(this.filterNotes);
-  }
+  constructor(
+    private dashboardService: DashboardService,
+    private dashFunctionsService: DashFunctionsService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    const card = this.filterNotes.find((c) => c.id === this.card.id);
-    if (changes['card'] && changes['card'].currentValue)
-      if (card) card.notes = this.card.notes;
+    const filterCard = this.dashboardService
+      .searchNotes()
+      .find((c: any) => c.id === this.card.id);
 
-    // console.log(card);
-
-    if (card) {
-      if (changes['valueFilterNotes']) {
-        const filter = card.notes.filter((item) =>
-          item.content
-            .toLowerCase()
-            .includes(this.valueFilterNotes.toLowerCase())
+    if (filterCard) {
+      if (changes['valueFilterNotes'].currentValue) {
+        const filter = this.dashFunctionsService.filterData(
+          filterCard.notes,
+          this.valueFilterNotes,
+          'content'
         );
-        // console.log(this.valueFilterNotes.length);
-
-        console.log(this.valueFilterNotes.length);
-
-        this.card = { ...card, notes: filter };
-      }
-    } else {
-      this.card = card as any;
+        this.card = { ...filterCard, notes: filter };
+      } else this.card = filterCard;
     }
   }
 

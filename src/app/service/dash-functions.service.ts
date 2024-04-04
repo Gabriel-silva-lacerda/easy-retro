@@ -77,12 +77,11 @@ export class DashFunctionsService {
 
   deleteNote(id: string | undefined, cardId: string | undefined) {
     const cards = this.dashboardService.dataCards();
-    const card = cards.find((card) => card.id === cardId);
-    if (card) {
-      const index = card.notes.findIndex((card) => card.id === id);
-      const isIndexValid = index !== -1;
-      if (isIndexValid) card?.notes?.splice(index, 1);
-    }
+    const card = cards.find((card) => card.id === cardId) as Card;
+
+    const index = card.notes.findIndex((card) => card.id === id);
+    const isIndexValid = index !== -1;
+    if (isIndexValid) card.notes.splice(index, 1);
 
     this.dashboardService.updateCard(card).subscribe({
       error: (error) => console.error(error),

@@ -35,9 +35,7 @@ export class PublicboardComponent implements OnInit {
   valueFilterNotes = '';
   showData: boolean = false;
   displayType: 'flex' | 'block' = 'flex';
-
   isLoading = false;
-  filterNotes: any[] = [];
 
   constructor(
     private dashboardService: DashboardService,
@@ -59,7 +57,6 @@ export class PublicboardComponent implements OnInit {
           this.dashboardService.searchNotes.set(filteredData);
 
           this.cards = filteredData;
-          this.filterNotes = filteredData;
         },
         error: (error) => {
           console.error(error);
@@ -71,9 +68,7 @@ export class PublicboardComponent implements OnInit {
 
   toggleDisplay = (type: 'flex' | 'block') => (this.displayType = type);
 
-  searchData = (value: string) => {
-    this.valueFilterNotes = value;
-  };
+  searchData = (value: string) => (this.valueFilterNotes = value);
 
   addNotesId = (id: string) => (this.notesId = id);
 

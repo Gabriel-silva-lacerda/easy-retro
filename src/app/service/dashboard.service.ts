@@ -29,7 +29,7 @@ export class DashboardService {
   getDataCards(): Observable<Card[]> {
     return this.http.get<Card[]>(`${this.apiUrl}/cards`).pipe(
       tap((data) => {
-        // this.dataCards.set(data);
+        this.dataCards.set(data);
         this.searchNotes.set(data);
       })
     );
@@ -60,32 +60,7 @@ export class DashboardService {
     return this.http.delete<T>(`${this.apiUrl}/${param}/${id}`);
   }
 
-  updateCard(note: any): Observable<Notes> {
-    return this.http.put<Notes>(`${this.apiUrl}/cards/${note.id}`, note);
+  updateCard(note: Card): Observable<Card> {
+    return this.http.put<Card>(`${this.apiUrl}/cards/${note.id}`, note)
   }
 }
-
-// deleteBoard(id: string | undefined): Observable<DashBoard> {
-//   return this.http.delete<DashBoard>(`${this.apiUrl}/boards/${id}`);
-// }
-
-// deleteCard(id: string | undefined): Observable<Notes> {
-//   return this.http.delete<Notes>(`${this.apiUrl}/cards/${id}`);
-// }
-
-// getNotes(obj?: any): Observable<Notes[]> {
-//   let params = new HttpParams();
-
-//   if (obj) {
-//     Object.entries(obj).forEach(
-//       ([key, value]) =>
-//         (params = value ? params.set(key, value.toString()) : params)
-//     );
-//   }
-
-//   return this.http.get<Notes[]>(`${this.apiUrl}/notes`, { params }).pipe(
-//     tap((data) => {
-//       this.dataNotes.set(data);
-//     })
-//   );
-// }
