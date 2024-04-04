@@ -1,4 +1,4 @@
-import { environment } from './../../environments/environment.development';
+import { environment } from './../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, WritableSignal, signal } from '@angular/core';
 import { Notes, Board, Card } from '../interfaces/dashBoard.interface';
@@ -61,6 +61,6 @@ export class DashboardService {
   }
 
   updateCard(note: Card): Observable<Card> {
-    return this.http.put<Card>(`${this.apiUrl}/cards/${note.id}`, note)
+    return this.http.put<Card>(`${this.apiUrl}/cards/${note.id}`, note);
   }
 }

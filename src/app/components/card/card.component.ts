@@ -59,7 +59,7 @@ export class CardComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     const filterCard = this.dashboardService
       .searchNotes()
-      .find((c: any) => c.id === this.card.id);
+      .find((c) => c.id === this.card.id);
 
     if (filterCard) {
       if (changes['valueFilterNotes'].currentValue) {
