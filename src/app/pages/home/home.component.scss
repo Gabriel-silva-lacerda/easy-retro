@@ -66,10 +66,16 @@
       .boards {
         display: flex !important;
         gap: 2rem;
+        position: relative;
 
         @media (max-width: 595px) {
           flex-wrap: wrap;
           display: block !important;
+        }
+
+        .boardSpinner {
+          position: absolute;
+          right: 50%;
         }
 
         .addBoard {

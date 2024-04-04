@@ -2,6 +2,7 @@ import {
   Component,
   Input,
   OnChanges,
+  OnInit,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -35,12 +36,12 @@ import { ColorPickerComponent } from '../color-picker/color-picker.component';
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
 })
-export class CardComponent implements OnChanges {
+export class CardComponent implements OnChanges, OnInit {
   @ViewChild(TextareaComponent)
   publicBoardNotesComponent!: TextareaComponent;
   @Input() cards: Card[] = [];
   @Input() card!: Card;
-  @Input() valueFilterNotes!: string;
+  @Input() valueFilterNotes = '';
   @Input() index!: number;
   @Input() layout!: 'flex' | 'block';
 
@@ -49,31 +50,37 @@ export class CardComponent implements OnChanges {
   isActiveMoreList!: number | null | boolean;
   isShowComponent = false;
   isColor = false;
-  originalNotes: Notes[] = [];
+  @Input() filterNotes: Card[] = [];
 
-  constructor(
-    private dashboardService: DashboardService,
-    private dashFunctionsService: DashFunctionsService
-  ) {}
+  constructor(private dashboardService: DashboardService) {}
+
+  ngOnInit(): void {
+    // console.log(this.filterNotes);
+  }
 
   ngOnChanges(changes: SimpleChanges) {
+    const card = this.filterNotes.find((c) => c.id === this.card.id);
     if (changes['card'] && changes['card'].currentValue)
-      this.originalNotes = [...this.card.notes];
+      if (card) card.notes = this.card.notes;
 
-    const card = this.dashboardService
-      .searchNotes()
-      .find((c) => c.id === this.card.id);
+    // console.log(card);
 
-    if (
-      changes['valueFilterNotes'] &&
-      changes['valueFilterNotes'].currentValue
-    ) {
-      this.card.notes = this.dashFunctionsService.filterData(
-        card?.notes || [],
-        this.valueFilterNotes,
-        'content'
-      );
-    } else this.card.notes = [...this.originalNotes];
+    if (card) {
+      if (changes['valueFilterNotes']) {
+        const filter = card.notes.filter((item) =>
+          item.content
+            .toLowerCase()
+            .includes(this.valueFilterNotes.toLowerCase())
+        );
+        // console.log(this.valueFilterNotes.length);
+
+        console.log(this.valueFilterNotes.length);
+
+        this.card = { ...card, notes: filter };
+      }
+    } else {
+      this.card = card as any;
+    }
   }
 
   generateNumericId(length: number) {

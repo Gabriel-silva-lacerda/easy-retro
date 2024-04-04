@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CardComponent } from '../../components/card/card.component';
 import { TextareaComponent } from '../../components/textarea/textarea.component';
 import { DashboardService } from '../../service/dashboard.service';
-import { Card } from '../../interfaces/dashBoard.interface';
+import { Card, Notes } from '../../interfaces/dashBoard.interface';
 import { ActivatedRoute } from '@angular/router';
 import { PublicBoardModalComponent } from '../../shared/public-board-modal/public-board-modal.component';
 import { IdService } from '../../service/id.service';
@@ -32,11 +32,12 @@ export class PublicboardComponent implements OnInit {
 
   addNoteClicked!: boolean;
   notesId!: string | undefined;
-  valueFilterNotes!: string;
+  valueFilterNotes = '';
   showData: boolean = false;
   displayType: 'flex' | 'block' = 'flex';
 
   isLoading = false;
+  filterNotes: any[] = [];
 
   constructor(
     private dashboardService: DashboardService,
@@ -53,10 +54,12 @@ export class PublicboardComponent implements OnInit {
       this.dashboardService.getDataCards().subscribe({
         next: (data) => {
           const filteredData = data.filter((board) => board.boardId === id);
+
           this.dashboardService.dataCards.set(filteredData);
           this.dashboardService.searchNotes.set(filteredData);
 
           this.cards = filteredData;
+          this.filterNotes = filteredData;
         },
         error: (error) => {
           console.error(error);
@@ -68,7 +71,9 @@ export class PublicboardComponent implements OnInit {
 
   toggleDisplay = (type: 'flex' | 'block') => (this.displayType = type);
 
-  searchData = (value: string) => (this.valueFilterNotes = value);
+  searchData = (value: string) => {
+    this.valueFilterNotes = value;
+  };
 
   addNotesId = (id: string) => (this.notesId = id);
 

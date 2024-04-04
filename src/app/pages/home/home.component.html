@@ -37,9 +37,10 @@
           <span>Add board</span>
         </div>
         @if(isLoadingBoard) {
-
-        <app-spinner />
-        } @if(!isLoadingBoard) {
+        <div class="boardSpinner">
+          <mat-spinner diameter="50"></mat-spinner>
+        </div>
+        } @else {
         <ul>
           @for (card of cardDash; track $index) {
           <app-card-board [cardContent]="card" />

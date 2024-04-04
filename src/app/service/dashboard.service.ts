@@ -29,7 +29,8 @@ export class DashboardService {
   getDataCards(): Observable<Card[]> {
     return this.http.get<Card[]>(`${this.apiUrl}/cards`).pipe(
       tap((data) => {
-        this.dataCards.set(data);
+        // this.dataCards.set(data);
+        this.searchNotes.set(data);
       })
     );
   }
@@ -50,6 +51,7 @@ export class DashboardService {
         const currentData = this.dataCards();
         currentData.push(newData);
         this.dataCards.set(currentData);
+        this.searchNotes.set(currentData);
       })
     );
   }

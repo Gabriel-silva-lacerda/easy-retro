@@ -1,3 +1,3 @@
 export const environment = {
-  apiUrl: 'https://json-easy-retro.onrender.com',
+  apiUrl: 'http://localhost:4200',
 };
